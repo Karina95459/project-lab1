@@ -25,12 +25,8 @@ class Game:
         self.score = 0
         self.font = pygame.font.Font(None, 36)
         self.init_objects()
-    def run(self) -> None:
-        #TODO: головний цикл гри
-        #TODO: виклик handle_events
-        #TODO: виклик update
-        #TODO: виклик draw
-        #TODO: clock.tick(self.fps)
+
+    def run(self):
         while self.is_running:
             self.handle_events()
 
