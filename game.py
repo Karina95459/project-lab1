@@ -9,12 +9,12 @@ import brick_manager
 
 class Game:
     def __init__(self, width: int, height: int, fps: int ):
-        # TODO: тут буде pygame.init()
+        pygame.init()
         self.width = width
         self.height = height
         self.fps = fps
-        self.screen = None   #TODO: створити screen через pygame.display
-        self.clock = None #TODO створити clock
+        self.screen = pygame.display.set_mode((width, height))
+        self.clock = pygame.time.Clock()
         self.ball = None #TODO: створюється в init_objects()
         self.platform = None #TODO: створюється в init_objects()
         self.brick_manager = None #TODO створюється в init_objects()
@@ -23,16 +23,22 @@ class Game:
         self.is_game_over = False
         self.is_win = False
         self.score = 0
-        self.font = None #TODO створити font
-        #TODO:в кінці init викликати init_objects
-
+        self.font = pygame.font.Font(None, 36)
+        self.init_objects()
     def run(self) -> None:
         #TODO: головний цикл гри
         #TODO: виклик handle_events
         #TODO: виклик update
         #TODO: виклик draw
         #TODO: clock.tick(self.fps)
-        pass
+        while self.is_running:
+            self.handle_events()
+
+            if not self.is_paused and not self.is_game_over and not self.is_win:
+                self.update()
+
+            self.draw()
+            self.clock.tick(self.fps)
 
     def handle_events(self) -> None:
         #TODO: обробка pygame events
