@@ -26,6 +26,7 @@ class Game:
         self.font = pygame.font.Font(None, 36)
         self.init_objects()
 
+# головний цикл гри
     def run(self):
         while self.is_running:
             self.handle_events()
