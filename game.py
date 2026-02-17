@@ -27,7 +27,8 @@ class Game:
         self.init_objects()
 
 # головний цикл гри
-    def run(self):
+    def run(self) -> None:
+
         while self.is_running:
             self.handle_events()
 
@@ -37,14 +38,50 @@ class Game:
             self.draw()
             self.clock.tick(self.fps)
 
-
     def handle_events(self) -> None:
-        #TODO: обробка pygame events
-        #TODO: вихід з гри
-        #TODO: рух платформи
-        #TODO: pause
-        #TODO: restart
-        pass
+
+        for event in pygame.event.get():
+
+            # беремо всі події, що накопичились
+            if event.type == pygame.QUIT: # якщо натиснули Х закриваємо вікно
+                self.is_running = False
+
+            # обробка натискань клавіш
+            if event.type == pygame.KEYDOWN:
+
+                # esc - вихід
+                if event.key == pygame.K_ESCAPE:
+                    self.is_running = False
+
+                # рестарт
+                if event.key == pygame.K_r:
+                    self.restart()
+
+                #перевіряємо чи це р
+                if event.key == pygame.K_p:
+                 # викликаємо перемикач паузи
+                    self.toggle_pause()
+
+        if self.platform is None:
+            return
+
+        if self.is_paused or self.is_game_over or self.is_win:
+            return
+
+        keys = pygame.key.get_pressed()
+
+        # завдяки яким клавішам платформа рухається вліво
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
+            self.platform.move_left()
+
+        # завдяки яким клавішам платформа рухається вправо
+        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+            self.platform.move_right()
+
+        #використовуємо метод з класу platform для того, щоб платформа не виходила за межі
+        self.platform.clamp(self.width)
+
+
 
     def update(self) -> None:
         #TODO: рух м'яча
@@ -63,11 +100,15 @@ class Game:
         #TODO: намалювати м'яч
         #TODO: намалювати UI
         #TODO: pygame.display.flip()
-        pass
+        self.screen.fill((0,0,0)) # заливаємо фон чорним
+        pygame.display.flip()   # показуємо кадр на екрані
+
 
     def toggle_pause(self) -> None:
-        #TODO: змінити is_paused
-        pass
+
+        # змінюємо стан паузи на протилежний
+        self.is_paused = not self.is_paused
+
 
     def restart(self) -> None:
         #TODO: скинути score
