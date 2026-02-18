@@ -86,7 +86,7 @@ class Game:
     def update(self) -> None:
         #TODO: рух м'яча
         #TODO: перевірка стін
-        #TODO:перевірка платформи
+        #TODO: перевірка платформи
         #TODO: перевірка блоків
         #TODO: оновити score
         #TODO: перевірити програш
@@ -105,7 +105,6 @@ class Game:
 
 
     def toggle_pause(self) -> None:
-
         # змінюємо стан паузи на протилежний
         self.is_paused = not self.is_paused
 
@@ -138,13 +137,40 @@ class Game:
         pass
 
     def init_objects(self) -> None:
-        #TODO: встановити стартові координати і швидкості
-        #TODO: створити ball
-        #TODO: створити platform
-        #TODO: створити brick_manager
-        #TODO: створити level
-        pass
+        # початкові координати, розміри та швидкості
+        platform_width = 120
+        platform_height = 15
+        platform_speed = 8
 
+        ball_radius = 10
+        ball_dx = 4
+        ball_dy = -4
+
+        rows = 5
+        cols = 10
+        gap = 6
+        start_x = 40
+        start_y = 60
+
+        # створюємо платформу
+        platform_x = (self.width - platform_width) // 2
+
+        # Y робимо так, щоб платформа була по центру
+        platform_y = self.height - 40
+
+        self.platform = platform.Platform(platform_x, platform_y, platform_height, platform_width, platform_speed)
+
+        # створюємо м'яч
+        ball_x = platform_x + platform_width // 2
+        ball_y = platform_y - ball_radius - 2
+
+        self.ball = ball.Ball(ball_x, ball_y, ball_radius, ball_dx, ball_dy)
+
+        # створюємо brick manager
+        self.brick_manager = brick_manager.BrickManager(rows, cols, start_y, start_x, gap)
+
+        # створюємо рівень(список блоків)
+        self.brick_manager.create_level()
 
 
 
