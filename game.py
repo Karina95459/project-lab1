@@ -15,9 +15,9 @@ class Game:
         self.fps = fps
         self.screen = pygame.display.set_mode((width, height))
         self.clock = pygame.time.Clock()
-        self.ball = None #TODO: створюється в init_objects()
-        self.platform = None #TODO: створюється в init_objects()
-        self.brick_manager = None #TODO створюється в init_objects()
+        self.ball = None # створюється в init_objects()
+        self.platform = None # створюється в init_objects()
+        self.brick_manager = None # створюється в init_objects()
         self.is_running = True
         self.is_paused = False
         self.is_game_over = False
