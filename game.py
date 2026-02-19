@@ -118,10 +118,23 @@ class Game:
         pass
 
     def check_wall_collisions(self) -> None:
-        #TODO: ліва/права стіна
-        #TODO: верхня стіна
-        #TODO: bounce
-        pass
+        if self.ball is None:
+            return
+
+        # чи ліва точка м’яча торкнулась лівого краю екрана
+        if self.ball.x - self.ball.radius < 0:
+            self.ball.bounce_x() # Бо удар був по горизонталі → міняємо напрям X.
+            self.ball.x = self.ball.radius
+
+        # чи права точка м’яча торкнулась правого краю екрана
+        if self.ball.x + self.ball.radius >= self.width:
+            self.ball.bounce_x() # Бо удар був по горизонталі → міняємо напрям X.
+            self.ball.x = self.width - self.ball.radius
+
+        # чи верх м’яча торкнувся верхньої межі екрана
+        if self.ball.y - self.ball.radius <= 0:
+            self.ball.bounce_y() # Бо удар був по вертикалі → міняємо напрям Y
+            self.ball.y = self.ball.radius
 
     def check_paddle_collision(self) -> None:
         #TODO: ball rect vs platform rect
