@@ -22,9 +22,11 @@ class Ball:
 
     # цей метод малює м'яч на екрані
     def draw(self, screen: pygame.Surface) -> None:
-        # TODO: намалювати коло pygame.draw.circle
-        # TODO: використати координати x, y
-        # TODO: використати radius
+        # Визначаємо колір (RGB формат).
+        color = (255, 255, 255)
+
+        # Синтаксис
+        pygame.draw.circle(screen, color, (self.x, self.y), self.radius)
         pass
 
     # метод відскоку по горизонталі, викликається коли: коли м’яч б’ється
