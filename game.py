@@ -110,12 +110,19 @@ class Game:
 
 
     def restart(self) -> None:
-        #TODO: скинути score
-        #TODO: reset ball
-        #TODO: reset platform
-        #TODO: reset bricks
-        #TODO: скинути стани
-        pass
+        if self.ball is None or self.platform is None or self.brick_manager is None:
+            return
+
+        self.score = 0 # скинути score
+        # скинути стани
+        self.is_game_over = False
+        self.is_win = False
+        self.is_paused = False
+
+        self.ball.reset() # reset ball
+        self.platform.reset() # reset platform
+        self.brick_manager.reset() # reset bricks
+
 
     def check_wall_collisions(self) -> None:
         if self.ball is None:
