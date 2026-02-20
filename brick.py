@@ -18,11 +18,15 @@ class Brick:
         return rect
 
     def draw(self, screen: pygame.Surface) -> None:
-        # TODO: малювати тільки якщо is_destroyed == False
-        # TODO: намалювати прямокутник pygame.draw.rect
-        # TODO: використати x, y, width, height
-        # TODO: колір блоку задати константою або полем
-        pass
+        # Малюємо блок тільки якщо він ще не розбитий
+        if not self.is_destroyed:
+            brick_color = (255, 215, 0)
+
+            # Малюємо прямокутник: (поверхня, колір, (x, y, w, h))
+            pygame.draw.rect(screen, brick_color, (self.x, self.y, self.width, self.height))
+
+            # Малюємо рамку, щоб блоки не зливалися (товщина 2 пікселя)
+            pygame.draw.rect(screen, (255, 255, 255), (self.x, self.y, self.width, self.height), 2)
 
     def destroy(self) -> None:
         # TODO: встановити is_destroyed = True
