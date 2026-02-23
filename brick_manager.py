@@ -41,13 +41,24 @@ class BrickManager:
             bricks.draw(screen)
 
     def check_collision(self, ball: ball.Ball) -> int:
-        # TODO: пройтись по всіх bricks
-        # TODO: пропустити знищені блоки
-        # TODO: перевірити зіткнення ball.get_rect() з brick.get_rect()
-        # TODO: якщо є зіткнення → викликати brick.destroy()
-        # TODO: викликати ball.bounce_y() або bounce_x()
-        # TODO:повернути кількість очок (int), які треба додати
-        pass
+        total_score = 0
+
+        # Проходимося по всіх блоках
+        for brick in self.bricks:
+            # Пропускаємо вже знищені блоки
+            if not brick.is_destroyed:
+                # Перевіряємо зіткнення м'яча з блоком
+                if ball.get_rect().colliderect(brick.get_rect()):
+                    # Якщо є зіткнення → знищуємо блок
+                    brick.destroy()
+                    # Змушуємо м'яч відскочити
+                    ball.bounce_y()
+                    # Нараховуємо очки за кожен збитий блок
+                    total_score += 10
+                    # Виходимо з циклу після першого зіткнення, щоб м'яч не збив дві цеглини за один кадр
+                    break
+        # Повертаємо загальну суму очок за цей крок
+        return total_score
 
     def all_destroyed(self) -> bool:
         # TODO: перевірити всі bricks
