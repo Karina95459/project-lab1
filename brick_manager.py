@@ -35,9 +35,10 @@ class BrickManager:
                 self.bricks.append(new_brick)
 
     def draw(self, screen: pygame.Surface) -> None:
-        # TODO: пройтись по всіх bricks
-        # TODO: викликати draw() у кожного блоку
-        pass
+        # Проходимося циклом по кожній цеглині у нашому списку
+        for bricks in self.bricks:
+            # Викликаємо метод draw, який ми раніше написали в класі Brick
+            bricks.draw(screen)
 
     def check_collision(self, ball: ball.Ball) -> int:
         # TODO: пройтись по всіх bricks
