@@ -61,10 +61,8 @@ class BrickManager:
         return total_score
 
     def all_destroyed(self) -> bool:
-        # TODO: перевірити всі bricks
-        # TODO: якщо всі знищені → повернути True
-        # TODO: інакше False
-        pass
+        # Повертає True, якщо для всіх блоків справджується умова brick.is_destroyed
+        return all(brick.is_destroyed for brick in self.bricks)
 
     def reset(self) -> None:
         # TODO: очистити список bricks
