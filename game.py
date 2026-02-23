@@ -26,7 +26,7 @@ class Game:
         self.font = pygame.font.Font(None, 36)
         self.init_objects()
 
-# головний цикл гри
+    # головний цикл гри
     def run(self) -> None:
 
         while self.is_running:
@@ -37,6 +37,7 @@ class Game:
 
             self.draw()
             self.clock.tick(self.fps)
+
 
     def handle_events(self) -> None:
 
@@ -93,14 +94,20 @@ class Game:
         #TODO: перевірити перемогу
         pass
 
+
     def draw(self) -> None:
-        #TODO: очистити екран
-        #TODO: намалювати блоки
-        #TODO: намалювати платформу
-        #TODO: намалювати м'яч
-        #TODO: намалювати UI
-        #TODO: pygame.display.flip()
-        self.screen.fill((0,0,0)) # заливаємо фон чорним
+        self.screen.fill((0,0,0))
+
+        if self.brick_manager is not None:
+            self.brick_manager.draw(self.screen) # намалювати блоки
+
+        if self.platform is not None:
+            self.platform.draw(self.screen) # намалювати платформу
+
+        if self.ball is not None:
+            self.ball.draw(self.screen) # намалювати м'яч
+
+        self.draw_ui() # намалювати UI(рахунок, пауза, перемога, програш)
         pygame.display.flip()   # показуємо кадр на екрані
 
 
@@ -143,11 +150,13 @@ class Game:
             self.ball.bounce_y() # Бо удар був по вертикалі → міняємо напрям Y
             self.ball.y = self.ball.radius
 
+
     def check_paddle_collision(self) -> None:
         #TODO: ball rect vs platform rect
         #TODO: bounce: якщо зіткнення сталося, потрібно змінити напрям руху м’яча.
         #TODO: після зіткнення скоригувати позицію м'яча, щоб не було повторного зіткнення
         pass
+
 
     def draw_ui(self) -> None:
         #TODO: score text
@@ -155,6 +164,7 @@ class Game:
         #TODO: game over
         #TODO: win
         pass
+
 
     def init_objects(self) -> None:
         # початкові координати, розміри та швидкості
@@ -191,9 +201,3 @@ class Game:
 
         # створюємо рівень(список блоків)
         self.brick_manager.create_level()
-
-
-
-
-
-
