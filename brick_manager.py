@@ -35,7 +35,7 @@ class BrickManager:
                 self.bricks.append(new_brick)
 
     def draw(self, screen: pygame.Surface) -> None:
-        # Проходимося циклом по кожній цеглині у нашому списку
+        # Проходимося циклом по кожному блоку у нашому списку
         for bricks in self.bricks:
             # Викликаємо метод draw, який ми раніше написали в класі Brick
             bricks.draw(screen)
@@ -65,7 +65,8 @@ class BrickManager:
         return all(brick.is_destroyed for brick in self.bricks)
 
     def reset(self) -> None:
-        # TODO: очистити список bricks
-        # TODO: викликати create_level()
-        # TODO: використовується при restart
-        pass
+        # Очищуємо список bricks, щоб видалити старі (навіть знищені) об'єкти
+        self.bricks.clear()
+
+        # Викликаємо create_level(), щоб заповнити список новими блоками
+        self.create_level()
