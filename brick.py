@@ -29,4 +29,5 @@ class Brick:
             pygame.draw.rect(screen, (255, 255, 255), (self.x, self.y, self.width, self.height), 2)
 
     def destroy(self) -> None:
+        # Встановлюємо прапорець у True, щоб метод draw перестав малювати блок
         self.is_destroyed = True
