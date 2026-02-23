@@ -29,6 +29,4 @@ class Brick:
             pygame.draw.rect(screen, (255, 255, 255), (self.x, self.y, self.width, self.height), 2)
 
     def destroy(self) -> None:
-        # TODO: встановити is_destroyed = True
-        # TODO: викликається при зіткненні з м'ячем
-        pass
+        self.is_destroyed = True
