@@ -51,11 +51,11 @@ class Ball:
 
     # якщо м’яч нижче екрану - програш
     def is_out_of_bounds(self, screen_height: int) -> bool:
-        # TODO: перевірити чи м’яч нижче екрану
-        # TODO: перевірити вихід за нижню межу з урахуванням radius
-        # TODO: інакше False
-        # TODO: повернути True/False
-        pass
+        if self.y - self.radius > screen_height:
+            return True
+
+        # Якщо умова вище не справдилася, м'яч ще в грі
+        return False
 
     # рестарт для м'яча у грі
     def reset(self) -> None:
