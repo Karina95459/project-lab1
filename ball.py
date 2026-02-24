@@ -59,5 +59,6 @@ class Ball:
 
     # рестарт для м'яча у грі
     def reset(self) -> None:
-        # TODO: повернути м’яч у стартову позицію
-        pass
+        # Повертаємо координати x та y до початкових значень
+        self.x = self.start_x
+        self.y = self.start_y
