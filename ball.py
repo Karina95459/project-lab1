@@ -42,12 +42,12 @@ class Ball:
     # повертає прямокутник м’яча(використовуємо саме прямокутник для перевірки
     # зіткнення, бо y pygame так буде зручно) для перевірки зіткнень.
     def get_rect(self) -> pygame.Rect:
-        # TODO: створити pygame.Rect для м’яча
-        # TODO: розмір rect = radius * 2
-        # TODO: Rect має покривати м’яч (x, y як центр)
-        # TODO: використовується для перевірки колізій
-        # TODO: повернути Rect
-        pass
+        # Обчислюємо сторону квадрата (діаметр м'яча)
+        side = self.radius * 2
+
+        rect = pygame.Rect(self.x - self.radius, self.y - self.radius, side, side)
+
+        return rect
 
     # якщо м’яч нижче екрану - програш
     def is_out_of_bounds(self, screen_height: int) -> bool:
