@@ -152,10 +152,18 @@ class Game:
 
 
     def check_paddle_collision(self) -> None:
-        #TODO: ball rect vs platform rect
-        #TODO: bounce: якщо зіткнення сталося, потрібно змінити напрям руху м’яча.
-        #TODO: після зіткнення скоригувати позицію м'яча, щоб не було повторного зіткнення
-        pass
+        if self.ball is None or self.platform is None:
+            return
+
+        ball_rect = self.ball.get_rect()
+        platform_rect = self.platform.get_rect()
+
+        if ball_rect.colliderect(platform_rect):
+            if self.ball.dy > 0:
+                self.ball.bounce_y() # bounce: якщо зіткнення сталося, потрібно змінити напрям руху м’яча.
+                self.ball.y = self.platform.y - self.ball.radius # після зіткнення скоригувати позицію м'яча, щоб не було повторного зіткнення
+
+
 
 
     def draw_ui(self) -> None:
