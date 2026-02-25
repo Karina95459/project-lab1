@@ -167,11 +167,24 @@ class Game:
 
 
     def draw_ui(self) -> None:
-        #TODO: score text
-        #TODO: pause text
-        #TODO: game over
-        #TODO: win
-        pass
+        # score
+        score_text = self.font.render(f"Score: {self.score}", True, (0, 255, 0))
+        self.screen.blit(score_text, (10, 10))
+
+        # pause
+        if self.is_paused:
+            pause_text = self.font.render("PAUSED", True, (255, 0, 0))
+            self.screen.blit(pause_text, (self.width // 2 - 60, self.height // 2))
+
+        # game over
+        if self.is_game_over:
+            over_text = self.font.render("GAME OVER", True, (255, 0, 0))
+            self.screen.blit(over_text, (self.width // 2 - 90, self.height // 2))
+
+        # win
+        if self.is_win:
+            win_text = self.font.render("YOU WIN!", True, (0, 255, 0))
+            self.screen.blit(win_text, (self.width // 2 - 80, self.height // 2))
 
 
     def init_objects(self) -> None:
