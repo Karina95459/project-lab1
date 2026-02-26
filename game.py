@@ -58,9 +58,9 @@ class Game:
                 if event.key == pygame.K_r:
                     self.restart()
 
-                #перевіряємо чи це р
+                # перевіряємо чи це р
                 if event.key == pygame.K_p:
-                 # викликаємо перемикач паузи
+                    # викликаємо перемикач паузи
                     self.toggle_pause()
 
         if self.platform is None:
@@ -79,20 +79,30 @@ class Game:
         if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
             self.platform.move_right()
 
-        #використовуємо метод з класу platform для того, щоб платформа не виходила за межі
+        # використовуємо метод з класу platform для того, щоб платформа не виходила за межі
         self.platform.clamp(self.width)
 
 
 
     def update(self) -> None:
-        #TODO: рух м'яча
-        #TODO: перевірка стін
-        #TODO: перевірка платформи
-        #TODO: перевірка блоків
-        #TODO: оновити score
-        #TODO: перевірити програш
-        #TODO: перевірити перемогу
-        pass
+        if self.is_game_over or self.is_win:
+            return
+
+        if self.ball is None or self.platform is None or self.brick_manager is None:
+            return
+
+        self.ball.move() # рух м'яча
+        self.check_wall_collisions() # перевірка стін
+        self.check_paddle_collision() # перевірка платформи
+        destroyed = self.brick_manager.check_collision(self.ball) #  перевірка блоків
+        if destroyed is None:
+            destroyed = 0
+
+        self.score += destroyed # оновити score
+        if self.ball.is_out_of_bounds(self.height): # перевірити програш
+            self.is_game_over = True
+        elif self.brick_manager.all_destroyed(): #  перевірити перемогу
+            self.is_win = True
 
 
     def draw(self) -> None:
@@ -162,8 +172,6 @@ class Game:
             if self.ball.dy > 0:
                 self.ball.bounce_y() # bounce: якщо зіткнення сталося, потрібно змінити напрям руху м’яча.
                 self.ball.y = self.platform.y - self.ball.radius # після зіткнення скоригувати позицію м'яча, щоб не було повторного зіткнення
-
-
 
 
     def draw_ui(self) -> None:
