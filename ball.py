@@ -27,6 +27,7 @@ class Ball:
         # Синтаксис
         pygame.draw.circle(screen, color, (self.x, self.y), self.radius)
 
+
     # метод відскоку по горизонталі, викликається коли: коли м’яч б’ється
     # об ліву/праву стіну коли б’ється об блок (з боку)
     def bounce_x(self) -> None:
