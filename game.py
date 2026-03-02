@@ -23,6 +23,7 @@ class Game:
         self.is_game_over = False
         self.is_win = False
         self.score = 0
+
         self.font = pygame.font.Font(None, 36)
         self.init_objects()
 
@@ -230,3 +231,4 @@ class Game:
 
         # створюємо рівень(список блоків)
         self.brick_manager.create_level()
+        
