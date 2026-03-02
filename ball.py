@@ -13,50 +13,53 @@ class Ball:
 
     # метод руху м’яча, що він робить: змінює координати кожен кадр, використовує dx і dy
     def move(self) -> None:
-        # TODO: змінити х відповідно до dx
-        # TODO: змінити y відповідно до dy
-        pass
+        # Змінюємо х відповідно до dx (додаємо швидкість по горизонталі)
+        self.x += self.dx
+
+        # Змінюємо y відповідно до dy (додаємо швидкість по вертикалі)
+        self.y += self.dy
 
     # цей метод малює м'яч на екрані
     def draw(self, screen: pygame.Surface) -> None:
-        # TODO: намалювати коло pygame.draw.circle
-        # TODO: використати координати x, y
-        # TODO: використати radius
-        pass
+        # Визначаємо колір (RGB формат).
+        color = (255, 255, 255)
+
+        # Синтаксис
+        pygame.draw.circle(screen, color, (self.x, self.y), self.radius)
+
 
     # метод відскоку по горизонталі, викликається коли: коли м’яч б’ється
     # об ліву/праву стіну коли б’ється об блок (з боку)
     def bounce_x(self) -> None:
-        # TODO: змінити напрям руху по Х
-        # TODO: інвертувати dx
-        pass
+        # Змінюємо напрям руху по Х, інвертуючи dx
+        self.dx = -self.dx
 
     # метод відскоку по вертикалі, Коли викликається: при ударі об платформу
     # при ударі об блок при ударі об верхню стіну
     def bounce_y(self) -> None:
-        # TODO: змінити напрям руху по Y
-        # TODO: інвертувати dy
-        pass
+        # Змінюємо напрям руху по Y, інвертуючи dy
+        self.dy = -self.dy
 
     # повертає прямокутник м’яча(використовуємо саме прямокутник для перевірки
     # зіткнення, бо y pygame так буде зручно) для перевірки зіткнень.
     def get_rect(self) -> pygame.Rect:
-        # TODO: створити pygame.Rect для м’яча
-        # TODO: розмір rect = radius * 2
-        # TODO: Rect має покривати м’яч (x, y як центр)
-        # TODO: використовується для перевірки колізій
-        # TODO: повернути Rect
-        pass
+        # Обчислюємо сторону квадрата (діаметр м'яча)
+        side = self.radius * 2
+
+        rect = pygame.Rect(self.x - self.radius, self.y - self.radius, side, side)
+
+        return rect
 
     # якщо м’яч нижче екрану - програш
     def is_out_of_bounds(self, screen_height: int) -> bool:
-        # TODO: перевірити чи м’яч нижче екрану
-        # TODO: перевірити вихід за нижню межу з урахуванням radius
-        # TODO: інакше False
-        # TODO: повернути True/False
-        pass
+        if self.y - self.radius > screen_height:
+            return True
+
+        # Якщо умова вище не справдилася, м'яч ще в грі
+        return False
 
     # рестарт для м'яча у грі
     def reset(self) -> None:
-        # TODO: повернути м’яч у стартову позицію
-        pass
+        # Повертаємо координати x та y до початкових значень
+        self.x = self.start_x
+        self.y = self.start_y
