@@ -1,10 +1,9 @@
+import pygame
+from game import Game
+
 def main():
-
-    print("Hello, Polina!")
-
-    print("Hello, Arkanoid!!!")
-
+    game = Game(800,600,60)
+    game.run()
 
 if __name__ == "__main__":
     main()
-#test
