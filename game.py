@@ -207,7 +207,7 @@ class Game:
         ball_dy = -4
 
         rows = 5
-        cols = 10
+        cols = 11
         gap = 6
         start_x = 40
         start_y = 60
