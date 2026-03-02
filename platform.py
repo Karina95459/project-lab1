@@ -9,15 +9,18 @@ class Platform:
         self.speed = speed
         self.start_x = x
         self.start_y = y
+        self.color = (255, 255, 255)  # Білий колір
 
     def move_right(self) -> None:
         # TODO: збільшити x на speed
+        self.x += self.speed
         # TODO: викликається при натиснутій клавіші “Right/D”
         # TODO: після руху викликати clamp()
         pass
 
     def move_left(self) -> None:
         # TODO: зменшити x на speed
+        self.x -= self.speed
         # TODO: викликається при натиснутій клавіші “Left/A”
         # TODO: після руху викликати clamp()
         pass
@@ -26,23 +29,27 @@ class Platform:
         # TODO: намалювати прямокутник pygame.draw.rect
         # TODO: використати x, y, width, height
         # TODO: колір платформи задати константою або полем
-        pass
+        pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
 
     # використовується для колізій з м’ячем
     def get_rect(self) -> pygame.Rect:
         # TODO: повернути pygame.Rect з (x, y, width, height)
         # TODO: використовується для колізій з м’ячем
-        pass
+        return pygame.Rect(self.x, self.y, self.width, self.height)
 
     def clamp(self, screen_width: int) -> None:
         # TODO: якщо x < 0 - зробити x = 0
+        if self.x < 0:
+            self.x = 0
         # TODO: якщо x + width > screen_width -> x = screen_width - width
+        if self.x + self.width > screen_width:
+            self.x = screen_width - self.width
         # TODO: викликати після move_left/move_right
-        pass
+
 
     def reset(self) -> None:
         # TODO: повернути платформу у стартову позицію
         # TODO: self.x = start_x
         # TODO: self.y = start_y
-        pass
-
+        self.x = self.start_x
+        self.y = self.start_y
