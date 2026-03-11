@@ -10,14 +10,25 @@ class Ball:
         self.radius = radius # зберегти радіус
         self.dx = dx # зберегти швидкість руху
         self.dy = dy # зберегти швидкість руху
+        # TODO: додати start_dx і start_dy і зберегти у них початкові значення dx і dy
+        # TODO: додати speed_multiplier = 1.0
+        # TODO: додати max_multiplier = 2.5
+        # TODO: додати acceleration_rate = 0.001
 
     # метод руху м’яча, що він робить: змінює координати кожен кадр, використовує dx і dy
     def move(self) -> None:
+        # TODO: замість self.x += self.dx множити self.dx на speed_multiplier перед додаванням
+        # TODO: те саме для self.y += self.dy
+        # TODO: використати int() щоб округлити результат до цілого числа
         # Змінюємо х відповідно до dx (додаємо швидкість по горизонталі)
         self.x += self.dx
 
         # Змінюємо y відповідно до dy (додаємо швидкість по вертикалі)
         self.y += self.dy
+
+    def accelerate(self) -> None:
+        # TODO: якщо speed_multiplier < max_multiplier — збільшити на acceleration_rate
+        pass
 
     # цей метод малює м'яч на екрані
     def draw(self, screen: pygame.Surface) -> None:
@@ -63,3 +74,4 @@ class Ball:
         # Повертаємо координати x та y до початкових значень
         self.x = self.start_x
         self.y = self.start_y
+        # TODO: скинути speed_multiplier до 1.0

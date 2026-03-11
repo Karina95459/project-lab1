@@ -93,6 +93,7 @@ class Game:
             return
 
         self.ball.move() # рух м'яча
+        # TODO: викликати accelerate() після move()
         self.check_wall_collisions() # перевірка стін
         self.check_paddle_collision() # перевірка платформи
         destroyed = self.brick_manager.check_collision(self.ball) #  перевірка блоків
