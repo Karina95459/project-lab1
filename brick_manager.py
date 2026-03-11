@@ -19,8 +19,13 @@ class BrickManager:
         brick_width = 60
         brick_height = 20
 
+        # TODO: створити список row_colors з кольором для кожного рядка
+
         # Проходимося по рядках і колонках
         for row in range(self.rows):
+            # TODO: звернутись до списку row_colors по індексу поточного рядка (row)
+            # TODO: щоб не вийти за межі списку — використати остачу від ділення row % len(row_colors)
+            # TODO: зберегти результат у змінну color
             for col in range(self.cols):
                 # Обчислюємо позицію (x, y) для кожного блоку
                 # x = початковий x + (номер колонки * (ширина + відступ))
