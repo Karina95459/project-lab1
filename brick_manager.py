@@ -41,7 +41,7 @@ class BrickManager:
                 curr_y = self.start_y + row * (brick_height + self.gap)
 
                 # Створюємо новий об'єкт Brick
-                new_brick = brick.Brick(curr_x, curr_y, brick_width, brick_height)
+                new_brick = brick.Brick(curr_x, curr_y, brick_width, brick_height, color)
 
                 # Додаємо створений блок у список bricks
                 self.bricks.append(new_brick)
