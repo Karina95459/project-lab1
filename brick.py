@@ -9,6 +9,7 @@ class Brick:
         self.width = width
         self.height = height
         self.is_destroyed = False
+        # TODO: зберегти color як поле self.color
 
     def get_rect(self) -> pygame.Rect:
         # Створюємо об'єкт Rect, використовуючи поточні координати та розміри об'єкта
@@ -20,6 +21,7 @@ class Brick:
     def draw(self, screen: pygame.Surface) -> None:
         # Малюємо блок тільки якщо він ще не розбитий
         if not self.is_destroyed:
+            # TODO: замінити константу кольору на self.color
             brick_color = (255, 215, 0)
 
             # Малюємо прямокутник: (поверхня, колір, (x, y, w, h))
