@@ -2,6 +2,7 @@ import pygame
 import ball
 import platform
 import brick_manager
+# TODO: імпортувати score_manager
 
 # Game відповідає за головний цикл гри
 # викликає Ball, Platform, BrickManager
@@ -25,6 +26,7 @@ class Game:
         self.score = 0
 
         self.font = pygame.font.Font(None, 36)
+        # TODO: створити self.score_manager = score_manager.ScoreManager()
         self.init_objects()
 
     # головний цикл гри
@@ -100,6 +102,7 @@ class Game:
         if destroyed is None:
             destroyed = 0
 
+        # TODO: замінити self.score += destroyed на self.score_manager.add(destroyed)
         self.score += destroyed # оновити score
         if self.ball.is_out_of_bounds(self.height): # перевірити програш
             self.is_game_over = True
@@ -132,6 +135,7 @@ class Game:
         if self.ball is None or self.platform is None or self.brick_manager is None:
             return
 
+        # TODO: замінити self.score = 0 на self.score_manager.reset()
         self.score = 0 # скинути score
         # скинути стани
         self.is_game_over = False
@@ -177,6 +181,8 @@ class Game:
 
 
     def draw_ui(self) -> None:
+        # TODO: видалити стару логіку відображення score
+        # TODO: викликати self.score_manager.draw(self.screen)
         # score
         score_text = self.font.render(f"Score: {self.score}", True, (0, 255, 0))
         self.screen.blit(score_text, (10, 10))
@@ -199,6 +205,7 @@ class Game:
 
     def init_objects(self) -> None:
         # початкові координати, розміри та швидкості
+        # TODO: зменшити platform_width (наприклад до 80 або 100), щоб платформа була вужчою
         platform_width = 120
         platform_height = 15
         platform_speed = 8
