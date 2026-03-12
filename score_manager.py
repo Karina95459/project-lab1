@@ -10,3 +10,7 @@ class ScoreManager:
         self.score += points
         if self.score > self.high_score:
             self.high_score = self.score
+
+    def reset(self) -> None:
+        self.score = 0
+
