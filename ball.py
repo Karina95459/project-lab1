@@ -21,14 +21,15 @@ class Ball:
 
     # метод руху м’яча, що він робить: змінює координати кожен кадр, використовує dx і dy
     def move(self) -> None:
-        # TODO: замість self.x += self.dx множити self.dx на speed_multiplier перед додаванням
-        # TODO: те саме для self.y += self.dy
-        # TODO: використати int() щоб округлити результат до цілого числа
-        # Змінюємо х відповідно до dx (додаємо швидкість по горизонталі)
-        self.x += self.dx
+        # 1. Розраховуємо нові координати з урахуванням множника швидкості
+        # 2. Використовуємо int(), щоб Pygame не сварився на дробові пікселі
+        self.x += int(self.dx * self.speed_multiplier)
+        self.y += int(self.dy * self.speed_multiplier)
 
-        # Змінюємо y відповідно до dy (додаємо швидкість по вертикалі)
-        self.y += self.dy
+        # 3. Поступово збільшуємо прискорення кожного кадру,
+        # але не дозволяємо йому перевищити max_multiplier
+        if self.speed_multiplier < self.max_multiplier:
+            self.speed_multiplier += self.acceleration_rate
 
     def accelerate(self) -> None:
         # TODO: якщо speed_multiplier < max_multiplier — збільшити на acceleration_rate
