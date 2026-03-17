@@ -77,4 +77,9 @@ class Ball:
         # Повертаємо координати x та y до початкових значень
         self.x = self.start_x
         self.y = self.start_y
-        # TODO: скинути speed_multiplier до 1.0
+        # Скидаємо множник швидкості до базового
+        self.speed_multiplier = 1.0
+
+        # Скидаємо напрямок руху до початкового
+        self.dx = self.start_dx
+        self.dy = self.start_dy
