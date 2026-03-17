@@ -26,14 +26,12 @@ class Ball:
         self.x += int(self.dx * self.speed_multiplier)
         self.y += int(self.dy * self.speed_multiplier)
 
-        # 3. Поступово збільшуємо прискорення кожного кадру,
-        # але не дозволяємо йому перевищити max_multiplier
-        if self.speed_multiplier < self.max_multiplier:
-            self.speed_multiplier += self.acceleration_rate
 
     def accelerate(self) -> None:
-        # TODO: якщо speed_multiplier < max_multiplier — збільшити на acceleration_rate
-        pass
+        # Перевіряємо, чи не досягли ми ліміту швидкості
+        if self.speed_multiplier < self.max_multiplier:
+            # Збільшуємо множник на заданий крок
+            self.speed_multiplier += self.acceleration_rate
 
     # цей метод малює м'яч на екрані
     def draw(self, screen: pygame.Surface) -> None:
