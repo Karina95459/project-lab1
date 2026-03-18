@@ -19,13 +19,20 @@ class BrickManager:
         brick_width = 60
         brick_height = 20
 
-        # TODO: створити список row_colors з кольором для кожного рядка
+        # список кольорів для кожного рядка
+        row_colors = [
+            (255, 0, 0),  # червоний
+            (80, 130, 255),  # синій
+            (255, 165, 0),  # помаранчевий
+            (255, 192, 203),  # рожевий
+            (80, 200, 80),  # зелений
+        ]
 
         # Проходимося по рядках і колонках
         for row in range(self.rows):
-            # TODO: звернутись до списку row_colors по індексу поточного рядка (row)
-            # TODO: щоб не вийти за межі списку — використати остачу від ділення row % len(row_colors)
-            # TODO: зберегти результат у змінну color
+            # обираємо колір для поточного рядка
+            # % len(row_colors) — щоб не вийти за межі якщо рядків більше ніж кольорів
+            color = row_colors[row % len(row_colors)]
             for col in range(self.cols):
                 # Обчислюємо позицію (x, y) для кожного блоку
                 # x = початковий x + (номер колонки * (ширина + відступ))
@@ -34,7 +41,7 @@ class BrickManager:
                 curr_y = self.start_y + row * (brick_height + self.gap)
 
                 # Створюємо новий об'єкт Brick
-                new_brick = brick.Brick(curr_x, curr_y, brick_width, brick_height)
+                new_brick = brick.Brick(curr_x, curr_y, brick_width, brick_height, color)
 
                 # Додаємо створений блок у список bricks
                 self.bricks.append(new_brick)
