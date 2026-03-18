@@ -210,7 +210,7 @@ class Game:
         cols = 11
         gap = 6
         start_x = 40
-        start_y = 60
+        start_y = 80
 
         # створюємо платформу
         platform_x = (self.width - platform_width) // 2
