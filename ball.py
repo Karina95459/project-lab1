@@ -8,27 +8,30 @@ class Ball:
         self.start_x = x  # запам'ятали старт
         self.start_y = y
         self.radius = radius # зберегти радіус
-        self.dx = dx # зберегти швидкість руху
-        self.dy = dy # зберегти швидкість руху
-        # TODO: додати start_dx і start_dy і зберегти у них початкові значення dx і dy
-        # TODO: додати speed_multiplier = 1.0
-        # TODO: додати max_multiplier = 2.5
-        # TODO: додати acceleration_rate = 0.001
+        # Зберігаємо початкову швидкість, щоб метод reset() міг її відновити
+        self.dx = dx
+        self.dy = dy
+        self.start_dx = dx
+        self.start_dy = dy
+
+        # Параметри прискорення
+        self.speed_multiplier = 1.0  # Поточний множник швидкості
+        self.max_multiplier = 2.5  # Максимальна межа (щоб м'яч не став занадто швидким)
+        self.acceleration_rate = 0.001  # На скільки збільшуємо швидкість кожного кадру
 
     # метод руху м’яча, що він робить: змінює координати кожен кадр, використовує dx і dy
     def move(self) -> None:
-        # TODO: замість self.x += self.dx множити self.dx на speed_multiplier перед додаванням
-        # TODO: те саме для self.y += self.dy
-        # TODO: використати int() щоб округлити результат до цілого числа
-        # Змінюємо х відповідно до dx (додаємо швидкість по горизонталі)
-        self.x += self.dx
+        # 1. Розраховуємо нові координати з урахуванням множника швидкості
+        # 2. Використовуємо int(), щоб Pygame не сварився на дробові пікселі
+        self.x += int(self.dx * self.speed_multiplier)
+        self.y += int(self.dy * self.speed_multiplier)
 
-        # Змінюємо y відповідно до dy (додаємо швидкість по вертикалі)
-        self.y += self.dy
 
     def accelerate(self) -> None:
-        # TODO: якщо speed_multiplier < max_multiplier — збільшити на acceleration_rate
-        pass
+        # Перевіряємо, чи не досягли ми ліміту швидкості
+        if self.speed_multiplier < self.max_multiplier:
+            # Збільшуємо множник на заданий крок
+            self.speed_multiplier += self.acceleration_rate
 
     # цей метод малює м'яч на екрані
     def draw(self, screen: pygame.Surface) -> None:
@@ -74,4 +77,9 @@ class Ball:
         # Повертаємо координати x та y до початкових значень
         self.x = self.start_x
         self.y = self.start_y
-        # TODO: скинути speed_multiplier до 1.0
+        # Скидаємо множник швидкості до базового
+        self.speed_multiplier = 1.0
+
+        # Скидаємо напрямок руху до початкового
+        self.dx = self.start_dx
+        self.dy = self.start_dy
