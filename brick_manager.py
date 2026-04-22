@@ -2,6 +2,7 @@ import pygame
 import brick
 import ball
 
+
 class BrickManager:
     def __init__(self, rows: int, cols: int, start_y: int, start_x: int, gap: int):
         self.rows = rows
