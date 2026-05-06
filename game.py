@@ -1,6 +1,6 @@
 import pygame
 import ball
-import platform
+import paddle
 import brick_manager
 import score_manager
 
@@ -218,7 +218,7 @@ class Game:
         # Y робимо так, щоб платформа була по центру
         platform_y = self.height - 40
 
-        self.platform = platform.Platform(platform_x, platform_y, platform_height, platform_width, platform_speed)
+        self.platform = paddle.Platform(platform_x, platform_y, platform_height, platform_width, platform_speed)
 
         # створюємо м'яч
         ball_x = platform_x + platform_width // 2
