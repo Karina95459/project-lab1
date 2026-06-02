@@ -52,3 +52,14 @@ def test_all_destroyed_true(manager):
         brick.destroy()
     # тепер all_destroyed() має повертати True
     assert manager.all_destroyed() == True
+
+def test_reset(manager):
+    # знищуємо всі блоки
+    for brick in manager.bricks:
+        brick.destroy()
+    # викликаємо reset() — він має створити нові блоки
+    manager.reset()
+    # перевіряємо що блоки знову не знищені
+    assert manager.all_destroyed() == False
+    # і що їх кількість знову правильна
+    assert len(manager.bricks) == 3 * 4
