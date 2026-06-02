@@ -52,3 +52,26 @@ class TestInit:
     def test_start_position_saved(self, platform):
         assert platform.start_x == 350
         assert platform.start_y == 550
+
+# ---------------------------------------------------------------------------
+# Тести руху
+# ---------------------------------------------------------------------------
+@pytest.mark.movement
+class TestMove:
+    def test_move_right(self, platform):
+        platform.move_right()
+        assert platform.x == 360  # 350 + 10
+
+    def test_move_left(self, platform):
+        platform.move_left()
+        assert platform.x == 340  # 350 - 10
+
+    def test_move_right_multiple(self, platform):
+        for _ in range(3):
+            platform.move_right()
+        assert platform.x == 380  # 350 + 30
+
+    def test_move_does_not_change_y(self, platform):
+        platform.move_right()
+        platform.move_left()
+        assert platform.y == 550
