@@ -193,3 +193,29 @@ class TestBounce:
         ball.bounce_y()
         ball.bounce_y()
         assert ball.dy == original
+
+
+# ---------------------------------------------------------------------------
+# Тести get_rect
+# ---------------------------------------------------------------------------
+@pytest.mark.collision
+class TestGetRect:
+    def test_rect_top_left(self, ball):
+        rect = ball.get_rect()
+        assert rect.x == 390  # 400 - 10
+        assert rect.y == 290  # 300 - 10
+
+    def test_rect_size(self, ball):
+        rect = ball.get_rect()
+        assert rect.width == 20  # radius * 2
+        assert rect.height == 20
+
+    def test_rect_center(self, ball):
+        rect = ball.get_rect()
+        assert rect.centerx == ball.x
+        assert rect.centery == ball.y
+
+    def test_rect_type(self, ball):
+        import pygame
+        rect = ball.get_rect()
+        assert isinstance(rect, pygame.Rect)
