@@ -5,6 +5,7 @@ from brick_manager import BrickManager
 
 pygame.init()
 
+
 # ===== ФІКСТУРИ =====
 @pytest.fixture
 def manager():
@@ -13,6 +14,7 @@ def manager():
     bm = BrickManager(rows=3, cols=4, start_y=60, start_x=40, gap=6)
     bm.create_level()
     return bm
+
 
 # ===== МАРКЕРИ =====
 # всі тести у цьому файлі отримують мітку brick_manager
@@ -25,6 +27,7 @@ def test_create_level_count(manager):
     # перевіряємо що після create_level кількість блоків = rows * cols
     # у нашому випадку 3 * 4 = 12
     assert len(manager.bricks) == 3 * 4
+
 
 # ===== ПАРАМЕТРИЗАЦІЯ =====
 # перевіряємо create_level для різних розмірів поля
@@ -41,17 +44,20 @@ def test_create_level_parametrized(rows, cols):
     # перевіряємо що кількість блоків відповідає rows * cols
     assert len(bm.bricks) == rows * cols
 
+
 def test_all_destroyed_false(manager):
     # на початку жоден блок не знищений
     # тому all_destroyed() має повертати False
-    assert manager.all_destroyed() == False
+    assert manager.all_destroyed() is False
+
 
 def test_all_destroyed_true(manager):
     # знищуємо всі блоки вручну
     for brick in manager.bricks:
         brick.destroy()
     # тепер all_destroyed() має повертати True
-    assert manager.all_destroyed() == True
+    assert manager.all_destroyed() is True
+
 
 def test_reset(manager):
     # знищуємо всі блоки
@@ -60,16 +66,16 @@ def test_reset(manager):
     # викликаємо reset() — він має створити нові блоки
     manager.reset()
     # перевіряємо що блоки знову не знищені
-    assert manager.all_destroyed() == False
+    assert manager.all_destroyed() is False
     # і що їх кількість знову правильна
     assert len(manager.bricks) == 3 * 4
+
 
 # ===== МОКУВАННЯ =====
 # мокування — підміняємо реальний об'єкт фейковим
 # нам не треба створювати справжній Ball з pygame
 # MagicMock() створює об'єкт який може імітувати будь який метод
 # ми самі кажемо що має повертати get_rect()
-
 def test_check_collision_no_hit(manager):
     # створюємо фейковий м'яч
     mock_ball = MagicMock()
@@ -78,6 +84,7 @@ def test_check_collision_no_hit(manager):
     # перевіряємо що score = 0 бо зіткнення не було
     score = manager.check_collision(mock_ball)
     assert score == 0
+
 
 def test_check_collision_hit(manager):
     # беремо перший блок щоб знати його точні координати
@@ -90,4 +97,4 @@ def test_check_collision_hit(manager):
     score = manager.check_collision(mock_ball)
     assert score == 10
     # і що блок справді знищений
-    assert first_brick.is_destroyed == True
+    assert first_brick.is_destroyed is True
