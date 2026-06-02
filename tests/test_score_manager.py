@@ -98,3 +98,23 @@ class TestHighScore:
     def test_high_score_not_below_score(self, manager):
         manager.add(40)
         assert manager.high_score >= manager.score
+
+# ---------------------------------------------------------------------------
+# Тести reset
+# ---------------------------------------------------------------------------
+class TestReset:
+    def test_reset_zeroes_score(self, manager):
+        manager.add(40)
+        manager.reset()
+        assert manager.score == 0
+
+    def test_reset_keeps_high_score(self, manager):
+        manager.add(40)
+        manager.reset()
+        assert manager.high_score == 40
+
+    def test_reset_idempotent(self, manager):
+        manager.add(10)
+        manager.reset()
+        manager.reset()
+        assert manager.score == 0
