@@ -76,3 +76,92 @@ class TestPlatformMovement:
         paddle.speed = 10
         paddle.move_left()
         assert paddle.x == -5
+
+
+class TestPlatformClamp:
+    """Тести для обмеження позиції платформи на екрані (clamp)"""
+
+    def test_clamp_left_boundary(self, paddle):
+        """Якщо x < 0, має бути встановлено x = 0"""
+        paddle.x = -50
+        paddle.clamp(800)
+        assert paddle.x == 0
+
+    def test_clamp_left_boundary_at_zero(self, paddle):
+        """Якщо x = -1, має бути встановлено x = 0"""
+        paddle.x = -1
+        paddle.clamp(800)
+        assert paddle.x == 0
+
+    @pytest.mark.parametrize("x,screen_width,expected", [
+        (-100, 800, 0),
+        (-50, 800, 0),
+        (-1, 800, 0),
+        (0, 800, 0),
+        (1, 800, 1),
+    ])
+    def test_clamp_left_boundary_parametrized(self, paddle_params, x, screen_width, expected):
+        """Параметризований тест для лівої границі"""
+        p = paddle_params(x=x)
+        p.clamp(screen_width)
+        assert p.x == expected
+
+    def test_clamp_right_boundary(self, paddle):
+        """Якщо x + width > screen_width, має бути x = screen_width - width"""
+        paddle.x = 750
+        paddle.width = 100
+        paddle.clamp(800)
+        assert paddle.x == 700  # 800 - 100
+
+    def test_clamp_right_boundary_exact(self, paddle):
+        """Якщо x + width = screen_width, позиція невинна змінюватися"""
+        paddle.x = 700
+        paddle.width = 100
+        paddle.clamp(800)
+        assert paddle.x == 700
+
+    @pytest.mark.parametrize("x,width,screen_width,expected", [
+        (750, 100, 800, 700),  # 750 + 100 = 850 > 800
+        (701, 100, 800, 700),  # 701 + 100 = 801 > 800
+        (700, 100, 800, 700),  # 700 + 100 = 800 (на границі)
+        (699, 100, 800, 699),  # 699 + 100 = 799 < 800
+        (975, 50, 1024, 974),   # 975 + 50 = 1025 > 1024 ✓
+    ])
+    def test_clamp_right_boundary_parametrized(self, paddle_params, x, width, screen_width, expected):
+        """Параметризований тест для правої границі"""
+        p = paddle_params(x=x, width=width)
+        p.clamp(screen_width)
+        assert p.x == expected
+
+    def test_clamp_within_bounds(self, paddle):
+        """Якщо позиція в межах екрану, не змінюється"""
+        paddle.x = 400
+        original_x = paddle.x
+        paddle.clamp(800)
+        assert paddle.x == original_x
+
+    def test_clamp_does_not_affect_y(self, paddle):
+        """Clamp не повинен змінювати y координату"""
+        paddle.x = -50
+        original_y = paddle.y
+        paddle.clamp(800)
+        assert paddle.y == original_y
+
+    def test_clamp_after_move_left(self, paddle):
+        """Clamp після move_left, коли платформа виходить за ліву границю"""
+        paddle.x = 0
+        paddle.speed = 50
+        paddle.move_left()
+        assert paddle.x == -50
+        paddle.clamp(800)
+        assert paddle.x == 0
+
+    def test_clamp_after_move_right(self, paddle):
+        """Clamp після move_right, коли платформа виходить за праву границю"""
+        paddle.x = 790  # близько до границі
+        paddle.width = 100
+        paddle.speed = 50
+        paddle.move_right()
+        assert paddle.x == 840
+        paddle.clamp(800)
+        assert paddle.x == 700
