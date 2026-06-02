@@ -1,5 +1,6 @@
 import pygame
 
+
 # Brick — один блок у грі.
 # Використовується BrickManager для створення рівня.
 class Brick:
