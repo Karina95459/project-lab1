@@ -74,6 +74,7 @@ class TestInit:
         assert ball.radius == 10
 
 
+
 # ---------------------------------------------------------------------------
 # Тести руху
 # ---------------------------------------------------------------------------
@@ -103,3 +104,36 @@ class TestMove:
         fast_ball.move()
         assert fast_ball.x == 115
         assert fast_ball.y == 115
+
+
+# ---------------------------------------------------------------------------
+# Тести прискорення
+# ---------------------------------------------------------------------------
+@pytest.mark.movement
+@pytest.mark.slow
+class TestAccelerate:
+    def test_accelerate_increases_multiplier(self, ball):
+        before = ball.speed_multiplier
+        ball.accelerate()
+        assert ball.speed_multiplier > before
+
+    def test_accelerate_step_size(self, ball):
+        ball.accelerate()
+        assert abs(ball.speed_multiplier - 1.0001) < 1e-9
+
+    def test_accelerate_does_not_exceed_max(self, ball):
+        ball.speed_multiplier = 2.5  # вже на максимумі
+        ball.accelerate()
+        assert ball.speed_multiplier == 2.5
+
+    def test_accelerate_stops_at_max(self, ball):
+        ball.speed_multiplier = ball.max_multiplier - 0.00005
+        ball.accelerate()
+        # після кроку може перевищити max — перевіряємо фактичну логіку
+        # (метод додає тільки якщо < max)
+        assert ball.speed_multiplier <= ball.max_multiplier + ball.acceleration_rate
+
+    def test_many_accelerations_capped(self, ball):
+        for _ in range(100_000):
+            ball.accelerate()
+        assert ball.speed_multiplier <= ball.max_multiplier + ball.acceleration_rate
