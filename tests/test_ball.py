@@ -240,3 +240,39 @@ def test_is_out_of_bounds_parametrized(y, screen_height, expected):
 def test_is_out_of_bounds_boundary_ball(boundary_ball):
     """boundary_ball: y=595, radius=10 → нижній край=605 > 600."""
     assert boundary_ball.is_out_of_bounds(600) is True
+
+
+# ---------------------------------------------------------------------------
+# Тести reset
+# ---------------------------------------------------------------------------
+class TestReset:
+    def test_reset_restores_position(self, ball):
+        ball.move()
+        ball.move()
+        ball.reset()
+        assert ball.x == 400
+        assert ball.y == 300
+
+    def test_reset_restores_velocity(self, ball):
+        ball.bounce_x()
+        ball.bounce_y()
+        ball.reset()
+        assert ball.dx == 5
+        assert ball.dy == -5
+
+    def test_reset_restores_speed_multiplier(self, ball):
+        ball.speed_multiplier = 2.0
+        ball.reset()
+        assert ball.speed_multiplier == 1.0
+
+    def test_reset_after_many_accelerations(self, ball):
+        for _ in range(10_000):
+            ball.accelerate()
+        ball.reset()
+        assert ball.speed_multiplier == 1.0
+
+    def test_reset_idempotent(self, ball):
+        ball.reset()
+        ball.reset()
+        assert ball.x == 400
+        assert ball.y == 300
