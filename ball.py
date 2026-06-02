@@ -1,13 +1,14 @@
 import pygame
 
+
 class Ball:
     def __init__(self, x: int, y: int, radius: int, dx: int, dy: int):
-        self.x = x # зберегти поточну позицію м'яча
-        self.y = y #  зберегти поточну позицію м'яча
+        self.x = x  # зберегти поточну позицію м'яча
+        self.y = y  # зберегти поточну позицію м'яча
         # стартова позиція = початкові x, y
         self.start_x = x  # запам'ятали старт
         self.start_y = y
-        self.radius = radius # зберегти радіус
+        self.radius = radius  # зберегти радіус
         # Зберігаємо початкову швидкість, щоб метод reset() міг її відновити
         self.dx = dx
         self.dy = dy
@@ -26,7 +27,6 @@ class Ball:
         self.x += int(self.dx * self.speed_multiplier)
         self.y += int(self.dy * self.speed_multiplier)
 
-
     def accelerate(self) -> None:
         # Перевіряємо, чи не досягли ми ліміту швидкості
         if self.speed_multiplier < self.max_multiplier:
@@ -40,7 +40,6 @@ class Ball:
 
         # Синтаксис
         pygame.draw.circle(screen, color, (self.x, self.y), self.radius)
-
 
     # метод відскоку по горизонталі, викликається коли: коли м’яч б’ється
     # об ліву/праву стіну коли б’ється об блок (з боку)
