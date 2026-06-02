@@ -41,7 +41,7 @@ class Game:
             self.draw()
             self.clock.tick(self.fps)
 
-    def handle_events(self) -> None: 
+    def handle_events(self) -> None:
         for event in pygame.event.get():
 
             # беремо всі події, що накопичились
