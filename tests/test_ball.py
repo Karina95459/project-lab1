@@ -219,3 +219,24 @@ class TestGetRect:
         import pygame
         rect = ball.get_rect()
         assert isinstance(rect, pygame.Rect)
+
+
+# ---------------------------------------------------------------------------
+# Тести is_out_of_bounds — параметризація
+# ---------------------------------------------------------------------------
+@pytest.mark.collision
+@pytest.mark.parametrize("y,screen_height,expected", [
+    (595, 600, False),  # нижній край = 585 < 600
+    (611, 600, True),  # нижній край = 601 > 600
+    (610, 600, True),  # рівно за межею
+    (300, 600, False),  # по центру
+    (0, 600, False),  # вгорі
+])
+def test_is_out_of_bounds_parametrized(y, screen_height, expected):
+    b = Ball(x=200, y=y, radius=10, dx=0, dy=0)
+    assert b.is_out_of_bounds(screen_height) == expected
+
+
+def test_is_out_of_bounds_boundary_ball(boundary_ball):
+    """boundary_ball: y=595, radius=10 → нижній край=605 > 600."""
+    assert boundary_ball.is_out_of_bounds(600) is True
