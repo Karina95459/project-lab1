@@ -65,7 +65,7 @@ class Ball:
 
     # якщо м’яч нижче екрану - програш
     def is_out_of_bounds(self, screen_height: int) -> bool:
-        if self.y - self.radius > screen_height:
+        if self.y + self.radius > screen_height:
             return True
 
         # Якщо умова вище не справдилася, м'яч ще в грі
