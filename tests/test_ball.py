@@ -45,3 +45,30 @@ def boundary_ball():
     """М'яч поблизу нижньої межі екрану (height=600)."""
     # y=595 → нижній край = 595+10 = 605 > 600 → out of bounds
     return Ball(x=200, y=595, radius=10, dx=3, dy=3)
+
+
+# ---------------------------------------------------------------------------
+# Тести ініціалізації
+# ---------------------------------------------------------------------------
+class TestInit:
+    def test_initial_position(self, ball):
+        assert ball.x == 400
+        assert ball.y == 300
+
+    def test_initial_velocity(self, ball):
+        assert ball.dx == 5
+        assert ball.dy == -5
+
+    def test_start_position_saved(self, ball):
+        assert ball.start_x == 400
+        assert ball.start_y == 300
+
+    def test_start_velocity_saved(self, ball):
+        assert ball.start_dx == 5
+        assert ball.start_dy == -5
+
+    def test_default_speed_multiplier(self, ball):
+        assert ball.speed_multiplier == 1.0
+
+    def test_radius_stored(self, ball):
+        assert ball.radius == 10
