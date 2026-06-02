@@ -33,3 +33,12 @@ def test_brick_initial_state(red_brick):
 def test_brick_color(red_brick):
     # перевіряємо що колір зберігся правильно
     assert red_brick.color == (255, 0, 0)
+
+def test_destroy(red_brick):
+    # викликаємо destroy() і перевіряємо що is_destroyed стало True
+    red_brick.destroy()
+    assert red_brick.is_destroyed == True
+
+def test_already_destroyed(destroyed_brick):
+    # перевіряємо фікстуру destroyed_brick — вона вже має бути знищена
+    assert destroyed_brick.is_destroyed == True
