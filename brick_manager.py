@@ -57,13 +57,13 @@ class BrickManager:
         total_score = 0
 
         # Проходимося по всіх блоках
-        for brick in self.bricks:
+        for current_brick in self.bricks:
             # Пропускаємо вже знищені блоки
-            if not brick.is_destroyed:
+            if not current_brick.is_destroyed:
                 # Перевіряємо зіткнення м'яча з блоком
-                if ball.get_rect().colliderect(brick.get_rect()):
+                if ball.get_rect().colliderect(current_brick.get_rect()):
                     # Якщо є зіткнення → знищуємо блок
-                    brick.destroy()
+                    current_brick.destroy()
                     # Змушуємо м'яч відскочити
                     ball.bounce_y()
                     # Нараховуємо очки за кожен збитий блок
@@ -75,7 +75,7 @@ class BrickManager:
 
     def all_destroyed(self) -> bool:
         # Повертає True, якщо для всіх блоків справджується умова brick.is_destroyed
-        return all(brick.is_destroyed for brick in self.bricks)
+        return all(current_brick.is_destroyed for  current_brick in self.bricks)
 
     def reset(self) -> None:
         # Очищуємо список bricks, щоб видалити старі (навіть знищені) об'єкти
