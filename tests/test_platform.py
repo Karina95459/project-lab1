@@ -104,3 +104,22 @@ class TestClamp:
     def test_clamp_keeps_valid_position(self, platform):
         platform.clamp(800)
         assert platform.x == 350  # було в межах — лишилось як є
+
+# ---------------------------------------------------------------------------
+# Тести get_rect
+# ---------------------------------------------------------------------------
+@pytest.mark.collision
+class TestGetRect:
+    def test_rect_position(self, platform):
+        rect = platform.get_rect()
+        assert rect.x == 350
+        assert rect.y == 550
+
+    def test_rect_size(self, platform):
+        rect = platform.get_rect()
+        assert rect.width == 100
+        assert rect.height == 20
+
+    def test_rect_type(self, platform):
+        import pygame
+        assert isinstance(platform.get_rect(), pygame.Rect)
