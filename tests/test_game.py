@@ -3,9 +3,11 @@ from unittest import mock
 
 from game import Game
 
+
 @pytest.fixture
 def game():
-    return Game(800,600,60)
+    return Game(800, 600, 60)
+
 
 @pytest.mark.parametrize(
     "initial_state, expected_state",
@@ -14,11 +16,11 @@ def game():
         (True, False),
     ]
 )
-
 def test_toggle_pause(game, initial_state, expected_state):
     game.is_paused = initial_state
     game.toggle_pause()
     assert game.is_paused == expected_state
+
 
 def test_restart_resets_game_states(game):
     game.is_paused = True
