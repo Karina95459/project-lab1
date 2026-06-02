@@ -45,3 +45,33 @@ class TestInit:
         with patch("score_manager.pygame.font.Font") as mock_font:
             ScoreManager()
             mock_font.assert_called_once_with(None, 36)
+
+# ---------------------------------------------------------------------------
+# Тести add
+# ---------------------------------------------------------------------------
+@pytest.mark.scoring
+class TestAdd:
+    def test_add_increases_score(self, manager):
+        manager.add(10)
+        assert manager.score == 10
+
+    def test_add_multiple(self, manager):
+        manager.add(10)
+        manager.add(5)
+        assert manager.score == 15
+
+    def test_add_updates_high_score(self, manager):
+        manager.add(50)
+        assert manager.high_score == 50
+
+
+@pytest.mark.scoring
+@pytest.mark.parametrize("points,expected", [
+    (10, 10),
+    (0, 0),
+    (100, 100),
+    (1, 1),
+])
+def test_add_parametrized(manager, points, expected):
+    manager.add(points)
+    assert manager.score == expected
