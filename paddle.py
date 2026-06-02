@@ -1,7 +1,8 @@
 import pygame
 
+
 class Platform:
-    def __init__(self, x: int, y: int,height: int, width: int, speed: int):
+    def __init__(self, x: int, y: int, height: int, width: int, speed: int):
         self.x = x
         self.y = y
         self.height = height
@@ -15,18 +16,15 @@ class Platform:
         # збільшити x на speed
         self.x += self.speed
 
-
     def move_left(self) -> None:
         # зменшити x на speed
         self.x -= self.speed
-
 
     def draw(self, screen: pygame.Surface) -> None:
         #  намалювати прямокутник pygame.draw.rect
         # використати x, y, width, height
         # колір платформи задати константою або полем
         pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
-
 
     # використовується для колізій з м’ячем
     def get_rect(self) -> pygame.Rect:
@@ -43,11 +41,9 @@ class Platform:
             self.x = screen_width - self.width
         #  викликати після move_left/move_right
 
-
     def reset(self) -> None:
         # повернути платформу у стартову позицію
         # self.x = start_x
         # self.y = start_y
         self.x = self.start_x
         self.y = self.start_y
-        
