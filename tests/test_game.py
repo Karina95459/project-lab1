@@ -89,3 +89,52 @@ def test_check_wall_collision_no_collision(game):
     game.ball.bounce_y.assert_not_called()
     assert game.ball.x == original_x
     assert game.ball.y == original_y
+
+
+def test_check_paddle_collision_bounces_when_ball_hits_paddle(game):
+    game.ball.bounce_y = mock.MagicMock()
+
+    ball_rect = mock.MagicMock()
+    ball_rect.colliderect.return_value = True
+
+    game.ball.get_rect = mock.MagicMock(return_value=ball_rect)
+    game.platform.get_rect = mock.MagicMock(return_value=mock.MagicMock())
+
+    game.ball.dy = 5
+
+    game.check_paddle_collision()
+
+    game.ball.bounce_y.assert_called_once()
+    assert game.ball.y == game.platform.y - game.ball.radius
+
+
+def test_check_paddle_collision_does_not_bounce_when_ball_moves_up(game):
+    game.ball.bounce_y = mock.MagicMock()
+
+    ball_rect = mock.MagicMock()
+    ball_rect.colliderect.return_value = True
+
+    game.ball.get_rect = mock.MagicMock(return_value=ball_rect)
+    game.platform.get_rect = mock.MagicMock(return_value=mock.MagicMock())
+
+    game.ball.dy = -5
+
+    game.check_paddle_collision()
+
+    game.ball.bounce_y.assert_not_called()
+
+
+def test_check_paddle_collision_does_not_bounce_without_collision(game):
+    game.ball.bounce_y = mock.MagicMock()
+
+    ball_rect = mock.MagicMock()
+    ball_rect.colliderect.return_value = False
+
+    game.ball.get_rect = mock.MagicMock(return_value=ball_rect)
+    game.platform.get_rect = mock.MagicMock(return_value=mock.MagicMock())
+
+    game.ball.dy = 5
+
+    game.check_paddle_collision()
+
+    game.ball.bounce_y.assert_not_called()
