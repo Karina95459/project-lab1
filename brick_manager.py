@@ -2,7 +2,6 @@ import pygame
 import brick
 import ball
 
-
 class BrickManager:
     def __init__(self, rows: int, cols: int, start_y: int, start_x: int, gap: int):
         self.rows = rows
@@ -20,20 +19,9 @@ class BrickManager:
         brick_width = 60
         brick_height = 20
 
-        # список кольорів для кожного рядка
-        row_colors = [
-            (255, 0, 0),  # червоний
-            (80, 130, 255),  # синій
-            (255, 165, 0),  # помаранчевий
-            (255, 192, 203),  # рожевий
-            (80, 200, 80),  # зелений
-        ]
 
         # Проходимося по рядках і колонках
         for row in range(self.rows):
-            # обираємо колір для поточного рядка
-            # % len(row_colors) — щоб не вийти за межі якщо рядків більше ніж кольорів
-            color = row_colors[row % len(row_colors)]
             for col in range(self.cols):
                 # Обчислюємо позицію (x, y) для кожного блоку
                 # x = початковий x + (номер колонки * (ширина + відступ))
@@ -42,7 +30,6 @@ class BrickManager:
                 curr_y = self.start_y + row * (brick_height + self.gap)
 
                 # Створюємо новий об'єкт Brick
-                new_brick = brick.Brick(curr_x, curr_y, brick_width, brick_height, color)
 
                 # Додаємо створений блок у список bricks
                 self.bricks.append(new_brick)
@@ -57,13 +44,9 @@ class BrickManager:
         total_score = 0
 
         # Проходимося по всіх блоках
-        for current_brick in self.bricks:
             # Пропускаємо вже знищені блоки
-            if not current_brick.is_destroyed:
                 # Перевіряємо зіткнення м'яча з блоком
-                if ball.get_rect().colliderect(current_brick.get_rect()):
                     # Якщо є зіткнення → знищуємо блок
-                    current_brick.destroy()
                     # Змушуємо м'яч відскочити
                     ball.bounce_y()
                     # Нараховуємо очки за кожен збитий блок
@@ -75,7 +58,6 @@ class BrickManager:
 
     def all_destroyed(self) -> bool:
         # Повертає True, якщо для всіх блоків справджується умова brick.is_destroyed
-        return all(current_brick.is_destroyed for current_brick in self.bricks)
 
     def reset(self) -> None:
         # Очищуємо список bricks, щоб видалити старі (навіть знищені) об'єкти

@@ -1,37 +1,18 @@
 import pygame
 
-
 class Ball:
     def __init__(self, x: int, y: int, radius: int, dx: int, dy: int):
-        self.x = x  # зберегти поточну позицію м'яча
-        self.y = y  # зберегти поточну позицію м'яча
+        self.x = x # зберегти поточну позицію м'яча
+        self.y = y #  зберегти поточну позицію м'яча
         # стартова позиція = початкові x, y
         self.start_x = x  # запам'ятали старт
         self.start_y = y
-        self.radius = radius  # зберегти радіус
-        # Зберігаємо початкову швидкість, щоб метод reset() міг її відновити
-        self.dx = dx
-        self.dy = dy
-        self.start_dx = dx
-        self.start_dy = dy
-
-        # Параметри прискорення
-        self.speed_multiplier = 1.0  # Поточний множник швидкості
-        self.max_multiplier = 2.5  # Максимальна межа (щоб м'яч не став занадто швидким)
-        self.acceleration_rate = 0.0001  # На скільки збільшуємо швидкість кожного кадру
+        self.radius = radius # зберегти радіус
 
     # метод руху м’яча, що він робить: змінює координати кожен кадр, використовує dx і dy
     def move(self) -> None:
-        # 1. Розраховуємо нові координати з урахуванням множника швидкості
-        # 2. Використовуємо int(), щоб Pygame не сварився на дробові пікселі
-        self.x += int(self.dx * self.speed_multiplier)
-        self.y += int(self.dy * self.speed_multiplier)
 
     def accelerate(self) -> None:
-        # Перевіряємо, чи не досягли ми ліміту швидкості
-        if self.speed_multiplier < self.max_multiplier:
-            # Збільшуємо множник на заданий крок
-            self.speed_multiplier += self.acceleration_rate
 
     # цей метод малює м'яч на екрані
     def draw(self, screen: pygame.Surface) -> None:
@@ -76,9 +57,3 @@ class Ball:
         # Повертаємо координати x та y до початкових значень
         self.x = self.start_x
         self.y = self.start_y
-        # Скидаємо множник швидкості до базового
-        self.speed_multiplier = 1.0
-
-        # Скидаємо напрямок руху до початкового
-        self.dx = self.start_dx
-        self.dy = self.start_dy
