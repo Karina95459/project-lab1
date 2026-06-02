@@ -248,3 +248,53 @@ class TestPlatformReset:
         paddle.reset()
         assert paddle.x == paddle.start_x
         assert paddle.y == paddle.start_y
+
+
+class TestPlatformGetRect:
+    """Тести для отримання Rect об'єкту платформи"""
+
+    def test_get_rect_returns_rect(self, paddle):
+        """get_rect повинен повертати pygame.Rect"""
+        rect = paddle.get_rect()
+        assert rect.x == paddle.x
+        assert rect.y == paddle.y
+        assert rect.width == paddle.width
+        assert rect.height == paddle.height
+
+    def test_get_rect_values(self, paddle):
+        """get_rect повинен мати правильні координати та розміри"""
+        rect = paddle.get_rect()
+        assert rect.x == 100
+        assert rect.y == 500
+        assert rect.width == 100
+        assert rect.height == 20
+
+    def test_get_rect_after_move(self, paddle):
+        """get_rect повинен відображати змінену позицію після руху"""
+        paddle.move_right()
+        rect = paddle.get_rect()
+        assert rect.x == 110  # 100 + 10
+        assert rect.y == 500
+
+    def test_get_rect_independent_copy(self, paddle):
+        """get_rect повинен повертати незалежну копію"""
+        rect1 = paddle.get_rect()
+        paddle.move_right()
+        rect2 = paddle.get_rect()
+        assert rect1.x != rect2.x
+        assert rect1.x == 100
+        assert rect2.x == 110
+
+    @pytest.mark.parametrize("x,y,width,height", [
+        (0, 0, 50, 10),
+        (100, 200, 100, 30),
+        (500, 400, 150, 25),
+    ])
+    def test_get_rect_parametrized(self, paddle_params, x, y, width, height):
+        """Параметризований тест для різних позицій та розмірів"""
+        p = paddle_params(x=x, y=y, width=width, height=height)
+        rect = p.get_rect()
+        assert rect.x == x
+        assert rect.y == y
+        assert rect.width == width
+        assert rect.height == height
