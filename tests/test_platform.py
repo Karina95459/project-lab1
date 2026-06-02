@@ -123,3 +123,35 @@ class TestGetRect:
     def test_rect_type(self, platform):
         import pygame
         assert isinstance(platform.get_rect(), pygame.Rect)
+
+# ---------------------------------------------------------------------------
+# Тести draw — mocking
+# ---------------------------------------------------------------------------
+@pytest.mark.rendering
+class TestDraw:
+    @patch("paddle.pygame.draw.rect")
+    def test_draw_calls_rect(self, mock_rect, platform):
+        """Перевіряємо, що draw() викликає pygame.draw.rect з правильними аргументами."""
+        mock_screen = MagicMock()
+        platform.draw(mock_screen)
+        mock_rect.assert_called_once_with(
+            mock_screen,
+            platform.color,
+            (platform.x, platform.y, platform.width, platform.height),
+        )
+
+    @patch("paddle.pygame.draw.rect")
+    def test_draw_called_once(self, mock_rect, platform):
+        mock_screen = MagicMock()
+        platform.draw(mock_screen)
+        assert mock_rect.call_count == 1
+
+    @patch("paddle.pygame.draw.rect")
+    def test_draw_position_after_move(self, mock_rect, platform):
+        """Після move_right() малюємо на новій позиції."""
+        platform.move_right()
+        mock_screen = MagicMock()
+        platform.draw(mock_screen)
+        _, args, _ = mock_rect.mock_calls[0]
+        rect_tuple = args[2]
+        assert rect_tuple == (platform.x, platform.y, platform.width, platform.height)
