@@ -166,7 +166,7 @@ class Game:
         if ball_rect.colliderect(platform_rect):
             if self.ball.dy > 0:
                 self.ball.bounce_y()  # bounce: якщо зіткнення сталося, потрібно змінити напрям руху м’яча.
-                self.ball.y = self.platform.y - self.ball.radius  # скоригувати позцію, щоб не було повторного зіткнення
+                self.ball.y = self.platform.y - self.ball.radius  # скоригувати позцію
 
     def draw_ui(self) -> None:
         # score
