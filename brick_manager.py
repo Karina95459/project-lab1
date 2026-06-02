@@ -19,13 +19,9 @@ class BrickManager:
         brick_width = 60
         brick_height = 20
 
-        # TODO: створити список row_colors з кольором для кожного рядка
 
         # Проходимося по рядках і колонках
         for row in range(self.rows):
-            # TODO: звернутись до списку row_colors по індексу поточного рядка (row)
-            # TODO: щоб не вийти за межі списку — використати остачу від ділення row % len(row_colors)
-            # TODO: зберегти результат у змінну color
             for col in range(self.cols):
                 # Обчислюємо позицію (x, y) для кожного блоку
                 # x = початковий x + (номер колонки * (ширина + відступ))
@@ -34,7 +30,6 @@ class BrickManager:
                 curr_y = self.start_y + row * (brick_height + self.gap)
 
                 # Створюємо новий об'єкт Brick
-                new_brick = brick.Brick(curr_x, curr_y, brick_width, brick_height)
 
                 # Додаємо створений блок у список bricks
                 self.bricks.append(new_brick)
@@ -49,13 +44,9 @@ class BrickManager:
         total_score = 0
 
         # Проходимося по всіх блоках
-        for brick in self.bricks:
             # Пропускаємо вже знищені блоки
-            if not brick.is_destroyed:
                 # Перевіряємо зіткнення м'яча з блоком
-                if ball.get_rect().colliderect(brick.get_rect()):
                     # Якщо є зіткнення → знищуємо блок
-                    brick.destroy()
                     # Змушуємо м'яч відскочити
                     ball.bounce_y()
                     # Нараховуємо очки за кожен збитий блок
@@ -67,7 +58,6 @@ class BrickManager:
 
     def all_destroyed(self) -> bool:
         # Повертає True, якщо для всіх блоків справджується умова brick.is_destroyed
-        return all(brick.is_destroyed for brick in self.bricks)
 
     def reset(self) -> None:
         # Очищуємо список bricks, щоб видалити старі (навіть знищені) об'єкти

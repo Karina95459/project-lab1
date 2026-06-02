@@ -1,8 +1,6 @@
 import pygame
 import ball
-import platform
 import brick_manager
-# TODO: імпортувати score_manager
 
 # Game відповідає за головний цикл гри
 # викликає Ball, Platform, BrickManager
@@ -23,10 +21,8 @@ class Game:
         self.is_paused = False
         self.is_game_over = False
         self.is_win = False
-        self.score = 0
 
         self.font = pygame.font.Font(None, 36)
-        # TODO: створити self.score_manager = score_manager.ScoreManager()
         self.init_objects()
 
     # головний цикл гри
@@ -41,9 +37,7 @@ class Game:
             self.draw()
             self.clock.tick(self.fps)
 
-
     def handle_events(self) -> None:
-
         for event in pygame.event.get():
 
             # беремо всі події, що накопичились
@@ -85,8 +79,6 @@ class Game:
         # використовуємо метод з класу platform для того, щоб платформа не виходила за межі
         self.platform.clamp(self.width)
 
-
-
     def update(self) -> None:
         if self.is_game_over or self.is_win:
             return
@@ -95,20 +87,16 @@ class Game:
             return
 
         self.ball.move() # рух м'яча
-        # TODO: викликати accelerate() після move()
         self.check_wall_collisions() # перевірка стін
         self.check_paddle_collision() # перевірка платформи
         destroyed = self.brick_manager.check_collision(self.ball) #  перевірка блоків
         if destroyed is None:
             destroyed = 0
 
-        # TODO: замінити self.score += destroyed на self.score_manager.add(destroyed)
-        self.score += destroyed # оновити score
         if self.ball.is_out_of_bounds(self.height): # перевірити програш
             self.is_game_over = True
         elif self.brick_manager.all_destroyed(): #  перевірити перемогу
             self.is_win = True
-
 
     def draw(self) -> None:
         self.screen.fill((0,0,0))
@@ -125,18 +113,14 @@ class Game:
         self.draw_ui() # намалювати UI(рахунок, пауза, перемога, програш)
         pygame.display.flip()   # показуємо кадр на екрані
 
-
     def toggle_pause(self) -> None:
         # змінюємо стан паузи на протилежний
         self.is_paused = not self.is_paused
-
 
     def restart(self) -> None:
         if self.ball is None or self.platform is None or self.brick_manager is None:
             return
 
-        # TODO: замінити self.score = 0 на self.score_manager.reset()
-        self.score = 0 # скинути score
         # скинути стани
         self.is_game_over = False
         self.is_win = False
@@ -145,7 +129,6 @@ class Game:
         self.ball.reset() # reset ball
         self.platform.reset() # reset platform
         self.brick_manager.reset() # reset bricks
-
 
     def check_wall_collisions(self) -> None:
         if self.ball is None:
@@ -166,7 +149,6 @@ class Game:
             self.ball.bounce_y() # Бо удар був по вертикалі → міняємо напрям Y
             self.ball.y = self.ball.radius
 
-
     def check_paddle_collision(self) -> None:
         if self.ball is None or self.platform is None:
             return
@@ -177,16 +159,9 @@ class Game:
         if ball_rect.colliderect(platform_rect):
             if self.ball.dy > 0:
                 self.ball.bounce_y() # bounce: якщо зіткнення сталося, потрібно змінити напрям руху м’яча.
-                self.ball.y = self.platform.y - self.ball.radius # після зіткнення скоригувати позицію м'яча, щоб не було повторного зіткнення
-
 
     def draw_ui(self) -> None:
-        # TODO: видалити стару логіку відображення score
-        # TODO: викликати self.score_manager.draw(self.screen)
         # score
-        score_text = self.font.render(f"Score: {self.score}", True, (0, 255, 0))
-        self.screen.blit(score_text, (10, 10))
-
         # pause
         if self.is_paused:
             pause_text = self.font.render("PAUSED", True, (255, 0, 0))
@@ -202,11 +177,8 @@ class Game:
             win_text = self.font.render("YOU WIN!", True, (0, 255, 0))
             self.screen.blit(win_text, (self.width // 2 - 80, self.height // 2))
 
-
     def init_objects(self) -> None:
         # початкові координати, розміри та швидкості
-        # TODO: зменшити platform_width (наприклад до 80 або 100), щоб платформа була вужчою
-        platform_width = 120
         platform_height = 15
         platform_speed = 8
 
@@ -218,7 +190,6 @@ class Game:
         cols = 11
         gap = 6
         start_x = 40
-        start_y = 60
 
         # створюємо платформу
         platform_x = (self.width - platform_width) // 2
@@ -226,7 +197,6 @@ class Game:
         # Y робимо так, щоб платформа була по центру
         platform_y = self.height - 40
 
-        self.platform = platform.Platform(platform_x, platform_y, platform_height, platform_width, platform_speed)
 
         # створюємо м'яч
         ball_x = platform_x + platform_width // 2
