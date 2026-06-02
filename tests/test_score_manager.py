@@ -85,3 +85,46 @@ class TestScoreManagerAdd:
             score_manager.add(points)
         assert score_manager.score == expected_score
         assert score_manager.high_score == expected_high_score
+
+
+class TestScoreManagerReset:
+    """Тести для скидання очок"""
+
+    def test_reset_basic(self, score_manager):
+        """reset повинен встановити score на 0"""
+        score_manager.add(100)
+        score_manager.reset()
+        assert score_manager.score == 0
+
+    def test_reset_does_not_affect_high_score(self, score_manager):
+        """reset не повинен змінювати high_score"""
+        score_manager.add(100)
+        score_manager.reset()
+        assert score_manager.high_score == 100
+
+    def test_reset_after_multiple_adds(self, score_manager):
+        """reset повинен скинути score після багатьох додавань"""
+        score_manager.add(30)
+        score_manager.add(40)
+        score_manager.add(50)
+        score_manager.reset()
+        assert score_manager.score == 0
+
+    def test_reset_allows_score_to_exceed_high_score_again(self, score_manager):
+        """Після reset можна знову набрати більше за high_score"""
+        score_manager.add(50)
+        score_manager.reset()
+        score_manager.add(100)
+        assert score_manager.score == 100
+        assert score_manager.high_score == 100
+
+    def test_reset_multiple_times(self, score_manager):
+        """reset можна викликати кілька разів"""
+        score_manager.add(50)
+        score_manager.reset()
+        score_manager.add(30)
+        score_manager.reset()
+        score_manager.add(80)
+        score_manager.reset()
+        assert score_manager.score == 0
+        assert score_manager.high_score == 80
