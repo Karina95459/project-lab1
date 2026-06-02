@@ -138,3 +138,18 @@ def test_check_paddle_collision_does_not_bounce_without_collision(game):
     game.check_paddle_collision()
 
     game.ball.bounce_y.assert_not_called()
+
+
+def test_init_objects_creates_game_objects(game):
+    assert game.ball is not None
+    assert game.platform is not None
+    assert game.brick_manager is not None
+
+
+def test_init_objects_sets_start_positions(game):
+    expected_platform_x = (game.width - 100) // 2
+    expected_platform_y = game.height - 40
+
+    assert game.platform.x == expected_platform_x
+    assert game.platform.y == expected_platform_y
+    assert game.ball.y == game.platform.y - game.ball.radius - 2
