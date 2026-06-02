@@ -75,3 +75,26 @@ class TestAdd:
 def test_add_parametrized(manager, points, expected):
     manager.add(points)
     assert manager.score == expected
+
+# ---------------------------------------------------------------------------
+# Тести high_score
+# ---------------------------------------------------------------------------
+@pytest.mark.scoring
+class TestHighScore:
+    def test_high_score_keeps_max(self, manager):
+        """Після reset рекорд не скидається, якщо новий результат менший."""
+        manager.add(50)
+        manager.reset()
+        manager.add(20)
+        assert manager.high_score == 50
+
+    def test_high_score_updates_when_beaten(self, manager):
+        """Рекорд оновлюється, коли новий результат більший."""
+        manager.add(30)
+        manager.reset()
+        manager.add(80)
+        assert manager.high_score == 80
+
+    def test_high_score_not_below_score(self, manager):
+        manager.add(40)
+        assert manager.high_score >= manager.score
