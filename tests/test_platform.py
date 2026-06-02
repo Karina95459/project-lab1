@@ -203,3 +203,48 @@ class TestPlatformInit:
         assert p.speed == speed
         assert p.start_x == x
         assert p.start_y == y
+
+
+class TestPlatformReset:
+    """Тести для скидання позиції платформи"""
+
+    def test_reset_basic(self, paddle):
+        """Reset повинен повернути платформу до початкової позиції"""
+        paddle.x = 300
+        paddle.y = 200
+        paddle.reset()
+        assert paddle.x == paddle.start_x
+        assert paddle.y == paddle.start_y
+
+    def test_reset_to_original_position(self, paddle):
+        """Reset має повернути до (100, 500)"""
+        paddle.x = 500
+        paddle.y = 600
+        paddle.reset()
+        assert paddle.x == 100
+        assert paddle.y == 500
+
+    def test_reset_after_move_right(self, paddle):
+        """Reset після move_right має повернути до початку"""
+        paddle.move_right()
+        paddle.move_right()
+        paddle.reset()
+        assert paddle.x == 100
+        assert paddle.y == 500
+
+    def test_reset_after_move_left(self, paddle):
+        """Reset після move_left має повернути до початку"""
+        paddle.move_left()
+        paddle.move_left()
+        paddle.reset()
+        assert paddle.x == 100
+        assert paddle.y == 500
+
+    @pytest.mark.parametrize("moves", [1, 5, 10, 20])
+    def test_reset_after_multiple_moves(self, paddle, moves):
+        """Reset після багаторазових рухів вправо"""
+        for _ in range(moves):
+            paddle.move_right()
+        paddle.reset()
+        assert paddle.x == paddle.start_x
+        assert paddle.y == paddle.start_y
