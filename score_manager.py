@@ -20,4 +20,3 @@ class ScoreManager:
         high_text = self.font.render(f"Best: {self.high_score}", True, (200, 200, 0))
         screen.blit(score_text, (10, 10))
         screen.blit(high_text, (10, 40))
-        
