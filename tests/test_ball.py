@@ -137,3 +137,59 @@ class TestAccelerate:
         for _ in range(100_000):
             ball.accelerate()
         assert ball.speed_multiplier <= ball.max_multiplier + ball.acceleration_rate
+
+
+# ---------------------------------------------------------------------------
+# Тести відскоку — параметризація
+# ---------------------------------------------------------------------------
+@pytest.mark.collision
+@pytest.mark.parametrize("dx,expected_dx", [
+    (5, -5),
+    (-5, 5),
+    (10, -10),
+    (-3, 3),
+    (0, 0),
+])
+def test_bounce_x_parametrized(dx, expected_dx):
+    b = Ball(x=0, y=0, radius=5, dx=dx, dy=0)
+    b.bounce_x()
+    assert b.dx == expected_dx
+
+
+@pytest.mark.collision
+@pytest.mark.parametrize("dy,expected_dy", [
+    (-5, 5),
+    (5, -5),
+    (7, -7),
+    (-1, 1),
+    (0, 0),
+])
+def test_bounce_y_parametrized(dy, expected_dy):
+    b = Ball(x=0, y=0, radius=5, dx=0, dy=dy)
+    b.bounce_y()
+    assert b.dy == expected_dy
+
+
+@pytest.mark.collision
+class TestBounce:
+    def test_bounce_x_does_not_change_dy(self, ball):
+        original_dy = ball.dy
+        ball.bounce_x()
+        assert ball.dy == original_dy
+
+    def test_bounce_y_does_not_change_dx(self, ball):
+        original_dx = ball.dx
+        ball.bounce_y()
+        assert ball.dx == original_dx
+
+    def test_double_bounce_x_restores(self, ball):
+        original = ball.dx
+        ball.bounce_x()
+        ball.bounce_x()
+        assert ball.dx == original
+
+    def test_double_bounce_y_restores(self, ball):
+        original = ball.dy
+        ball.bounce_y()
+        ball.bounce_y()
+        assert ball.dy == original
