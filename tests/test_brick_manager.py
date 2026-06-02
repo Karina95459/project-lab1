@@ -40,3 +40,15 @@ def test_create_level_parametrized(rows, cols):
     bm.create_level()
     # перевіряємо що кількість блоків відповідає rows * cols
     assert len(bm.bricks) == rows * cols
+
+def test_all_destroyed_false(manager):
+    # на початку жоден блок не знищений
+    # тому all_destroyed() має повертати False
+    assert manager.all_destroyed() == False
+
+def test_all_destroyed_true(manager):
+    # знищуємо всі блоки вручну
+    for brick in manager.bricks:
+        brick.destroy()
+    # тепер all_destroyed() має повертати True
+    assert manager.all_destroyed() == True
