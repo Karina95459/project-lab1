@@ -155,3 +155,25 @@ class TestDraw:
         _, args, _ = mock_rect.mock_calls[0]
         rect_tuple = args[2]
         assert rect_tuple == (platform.x, platform.y, platform.width, platform.height)
+
+# ---------------------------------------------------------------------------
+# Тести reset
+# ---------------------------------------------------------------------------
+class TestReset:
+    def test_reset_restores_position(self, platform):
+        platform.move_right()
+        platform.move_right()
+        platform.reset()
+        assert platform.x == 350
+        assert platform.y == 550
+
+    def test_reset_after_move_left(self, platform):
+        platform.move_left()
+        platform.reset()
+        assert platform.x == 350
+
+    def test_reset_idempotent(self, platform):
+        platform.reset()
+        platform.reset()
+        assert platform.x == 350
+        assert platform.y == 550
