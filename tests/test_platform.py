@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+from unittest.mock import patch, Mock
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -41,7 +42,9 @@ class TestPlatformMovement:
         assert paddle.x == initial_x + (paddle.speed * 3)
 
     @pytest.mark.parametrize("speed", [5, 10, 20, 50])
-    def test_move_right_with_different_speeds(self, paddle_params, speed):
+    def test_move_right_with_different_speeds(
+        self, paddle_params, speed
+    ):
         """Перевірка руху вправо з різними значеннями speed"""
         p = paddle_params(speed=speed)
         initial_x = p.x
@@ -63,7 +66,9 @@ class TestPlatformMovement:
         assert paddle.x == initial_x - (paddle.speed * 3)
 
     @pytest.mark.parametrize("speed", [5, 10, 20, 50])
-    def test_move_left_with_different_speeds(self, paddle_params, speed):
+    def test_move_left_with_different_speeds(
+        self, paddle_params, speed
+    ):
         """Перевірка руху вліво з різними значеннями speed"""
         p = paddle_params(speed=speed)
         initial_x = p.x
@@ -93,14 +98,19 @@ class TestPlatformClamp:
         paddle.clamp(800)
         assert paddle.x == 0
 
-    @pytest.mark.parametrize("x,screen_width,expected", [
-        (-100, 800, 0),
-        (-50, 800, 0),
-        (-1, 800, 0),
-        (0, 800, 0),
-        (1, 800, 1),
-    ])
-    def test_clamp_left_boundary_parametrized(self, paddle_params, x, screen_width, expected):
+    @pytest.mark.parametrize(
+        "x,screen_width,expected",
+        [
+            (-100, 800, 0),
+            (-50, 800, 0),
+            (-1, 800, 0),
+            (0, 800, 0),
+            (1, 800, 1),
+        ],
+    )
+    def test_clamp_left_boundary_parametrized(
+        self, paddle_params, x, screen_width, expected
+    ):
         """Параметризований тест для лівої границі"""
         p = paddle_params(x=x)
         p.clamp(screen_width)
@@ -120,14 +130,19 @@ class TestPlatformClamp:
         paddle.clamp(800)
         assert paddle.x == 700
 
-    @pytest.mark.parametrize("x,width,screen_width,expected", [
-        (750, 100, 800, 700),  # 750 + 100 = 850 > 800
-        (701, 100, 800, 700),  # 701 + 100 = 801 > 800
-        (700, 100, 800, 700),  # 700 + 100 = 800 (на границі)
-        (699, 100, 800, 699),  # 699 + 100 = 799 < 800
-        (975, 50, 1024, 974),   # 975 + 50 = 1025 > 1024 ✓
-    ])
-    def test_clamp_right_boundary_parametrized(self, paddle_params, x, width, screen_width, expected):
+    @pytest.mark.parametrize(
+        "x,width,screen_width,expected",
+        [
+            (750, 100, 800, 700),  # 750 + 100 = 850 > 800
+            (701, 100, 800, 700),  # 701 + 100 = 801 > 800
+            (700, 100, 800, 700),  # 700 + 100 = 800 (на границі)
+            (699, 100, 800, 699),  # 699 + 100 = 799 < 800
+            (975, 50, 1024, 974),  # 975 + 50 = 1025 > 1024
+        ],
+    )
+    def test_clamp_right_boundary_parametrized(
+        self, paddle_params, x, width, screen_width, expected
+    ):
         """Параметризований тест для правої границі"""
         p = paddle_params(x=x, width=width)
         p.clamp(screen_width)
@@ -187,13 +202,18 @@ class TestPlatformInit:
         """Колір платформи повинен бути білий (255, 255, 255)"""
         assert paddle.color == (255, 255, 255)
 
-    @pytest.mark.parametrize("x,y,height,width,speed", [
-        (0, 0, 10, 50, 5),
-        (400, 300, 30, 150, 20),
-        (1024, 720, 15, 80, 12),
-        (50, 100, 25, 120, 15),
-    ])
-    def test_platform_init_parametrized(self, paddle_params, x, y, height, width, speed):
+    @pytest.mark.parametrize(
+        "x,y,height,width,speed",
+        [
+            (0, 0, 10, 50, 5),
+            (400, 300, 30, 150, 20),
+            (1024, 720, 15, 80, 12),
+            (50, 100, 25, 120, 15),
+        ],
+    )
+    def test_platform_init_parametrized(
+        self, paddle_params, x, y, height, width, speed
+    ):
         """Параметризований тест для різних конфігурацій платформи"""
         p = paddle_params(x=x, y=y, height=height, width=width, speed=speed)
         assert p.x == x
@@ -285,12 +305,17 @@ class TestPlatformGetRect:
         assert rect1.x == 100
         assert rect2.x == 110
 
-    @pytest.mark.parametrize("x,y,width,height", [
-        (0, 0, 50, 10),
-        (100, 200, 100, 30),
-        (500, 400, 150, 25),
-    ])
-    def test_get_rect_parametrized(self, paddle_params, x, y, width, height):
+    @pytest.mark.parametrize(
+        "x,y,width,height",
+        [
+            (0, 0, 50, 10),
+            (100, 200, 100, 30),
+            (500, 400, 150, 25),
+        ],
+    )
+    def test_get_rect_parametrized(
+        self, paddle_params, x, y, width, height
+    ):
         """Параметризований тест для різних позицій та розмірів"""
         p = paddle_params(x=x, y=y, width=width, height=height)
         rect = p.get_rect()
@@ -298,9 +323,6 @@ class TestPlatformGetRect:
         assert rect.y == y
         assert rect.width == width
         assert rect.height == height
-
-
-from unittest.mock import patch, Mock
 
 
 class TestPlatformDraw:
@@ -314,7 +336,7 @@ class TestPlatformDraw:
             mock_rect.assert_called_once()
 
     def test_draw_with_correct_parameters(self, paddle):
-        """draw повинен викликати pygame.draw.rect з правильними параметрами"""
+        """draw викликає pygame.draw.rect з правильними параметрами"""
         mock_screen = Mock()
         with patch('paddle.pygame.draw.rect') as mock_rect:
             paddle.draw(mock_screen)
@@ -362,12 +384,17 @@ class TestPlatformDraw:
             assert rect_tuple[2] == paddle.width
             assert rect_tuple[3] == paddle.height
 
-    @pytest.mark.parametrize("x,y,width,height", [
-        (0, 0, 50, 10),
-        (100, 500, 100, 20),
-        (500, 700, 150, 30),
-    ])
-    def test_draw_parametrized_positions(self, paddle_params, x, y, width, height):
+    @pytest.mark.parametrize(
+        "x,y,width,height",
+        [
+            (0, 0, 50, 10),
+            (100, 500, 100, 20),
+            (500, 700, 150, 30),
+        ],
+    )
+    def test_draw_parametrized_positions(
+        self, paddle_params, x, y, width, height
+    ):
         """Параметризований тест для draw з різними позиціями"""
         p = paddle_params(x=x, y=y, width=width, height=height)
         mock_screen = Mock()
