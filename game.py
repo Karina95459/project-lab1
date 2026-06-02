@@ -8,17 +8,18 @@ import score_manager
 # викликає Ball, Platform, BrickManager
 # не містить їх логіки
 
+
 class Game:
-    def __init__(self, width: int, height: int, fps: int ):
+    def __init__(self, width: int, height: int, fps: int):
         pygame.init()
         self.width = width
         self.height = height
         self.fps = fps
         self.screen = pygame.display.set_mode((width, height))
         self.clock = pygame.time.Clock()
-        self.ball = None # створюється в init_objects()
-        self.platform = None # створюється в init_objects()
-        self.brick_manager = None # створюється в init_objects()
+        self.ball = None  # створюється в init_objects()
+        self.platform = None  # створюється в init_objects()
+        self.brick_manager = None  # створюється в init_objects()
         self.is_running = True
         self.is_paused = False
         self.is_game_over = False
@@ -40,13 +41,11 @@ class Game:
             self.draw()
             self.clock.tick(self.fps)
 
-
     def handle_events(self) -> None:
-
         for event in pygame.event.get():
 
             # беремо всі події, що накопичились
-            if event.type == pygame.QUIT: # якщо натиснули Х закриваємо вікно
+            if event.type == pygame.QUIT:  # якщо натиснули Х закриваємо вікно
                 self.is_running = False
 
             # обробка натискань клавіш
@@ -84,8 +83,6 @@ class Game:
         # використовуємо метод з класу platform для того, щоб платформа не виходила за межі
         self.platform.clamp(self.width)
 
-
-
     def update(self) -> None:
         if self.is_game_over or self.is_win:
             return
@@ -93,41 +90,38 @@ class Game:
         if self.ball is None or self.platform is None or self.brick_manager is None:
             return
 
-        self.ball.move() # рух м'яча
+        self.ball.move()  # рух м'яча
         self.ball.accelerate()
-        self.check_wall_collisions() # перевірка стін
-        self.check_paddle_collision() # перевірка платформи
-        destroyed = self.brick_manager.check_collision(self.ball) #  перевірка блоків
+        self.check_wall_collisions()  # перевірка стін
+        self.check_paddle_collision()  # перевірка платформи
+        destroyed = self.brick_manager.check_collision(self.ball)  # перевірка блоків
         if destroyed is None:
             destroyed = 0
 
         self.score_manager.add(destroyed)
-        if self.ball.is_out_of_bounds(self.height): # перевірити програш
+        if self.ball.is_out_of_bounds(self.height):  # перевірити програш
             self.is_game_over = True
-        elif self.brick_manager.all_destroyed(): #  перевірити перемогу
+        elif self.brick_manager.all_destroyed():  # перевірити перемогу
             self.is_win = True
 
-
     def draw(self) -> None:
-        self.screen.fill((0,0,0))
+        self.screen.fill((0, 0, 0))
 
         if self.brick_manager is not None:
-            self.brick_manager.draw(self.screen) # намалювати блоки
+            self.brick_manager.draw(self.screen)  # намалювати блоки
 
         if self.platform is not None:
-            self.platform.draw(self.screen) # намалювати платформу
+            self.platform.draw(self.screen)  # намалювати платформу
 
         if self.ball is not None:
-            self.ball.draw(self.screen) # намалювати м'яч
+            self.ball.draw(self.screen)  # намалювати м'яч
 
-        self.draw_ui() # намалювати UI(рахунок, пауза, перемога, програш)
-        pygame.display.flip()   # показуємо кадр на екрані
-
+        self.draw_ui()  # намалювати UI(рахунок, пауза, перемога, програш)
+        pygame.display.flip()  # показуємо кадр на екрані
 
     def toggle_pause(self) -> None:
         # змінюємо стан паузи на протилежний
         self.is_paused = not self.is_paused
-
 
     def restart(self) -> None:
         if self.ball is None or self.platform is None or self.brick_manager is None:
@@ -139,10 +133,9 @@ class Game:
         self.is_win = False
         self.is_paused = False
 
-        self.ball.reset() # reset ball
-        self.platform.reset() # reset platform
-        self.brick_manager.reset() # reset bricks
-
+        self.ball.reset()  # reset ball
+        self.platform.reset()  # reset platform
+        self.brick_manager.reset()  # reset bricks
 
     def check_wall_collisions(self) -> None:
         if self.ball is None:
@@ -150,19 +143,18 @@ class Game:
 
         # чи ліва точка м’яча торкнулась лівого краю екрана
         if self.ball.x - self.ball.radius < 0:
-            self.ball.bounce_x() # Бо удар був по горизонталі → міняємо напрям X.
+            self.ball.bounce_x()  # Бо удар був по горизонталі → міняємо напрям X.
             self.ball.x = self.ball.radius
 
         # чи права точка м’яча торкнулась правого краю екрана
         if self.ball.x + self.ball.radius >= self.width:
-            self.ball.bounce_x() # Бо удар був по горизонталі → міняємо напрям X.
+            self.ball.bounce_x()  # Бо удар був по горизонталі → міняємо напрям X.
             self.ball.x = self.width - self.ball.radius
 
         # чи верх м’яча торкнувся верхньої межі екрана
         if self.ball.y - self.ball.radius <= 0:
-            self.ball.bounce_y() # Бо удар був по вертикалі → міняємо напрям Y
+            self.ball.bounce_y()  # Бо удар був по вертикалі → міняємо напрям Y
             self.ball.y = self.ball.radius
-
 
     def check_paddle_collision(self) -> None:
         if self.ball is None or self.platform is None:
@@ -173,9 +165,8 @@ class Game:
 
         if ball_rect.colliderect(platform_rect):
             if self.ball.dy > 0:
-                self.ball.bounce_y() # bounce: якщо зіткнення сталося, потрібно змінити напрям руху м’яча.
-                self.ball.y = self.platform.y - self.ball.radius # після зіткнення скоригувати позицію м'яча, щоб не було повторного зіткнення
-
+                self.ball.bounce_y()  # bounce: якщо зіткнення сталося, потрібно змінити напрям руху м’яча.
+                self.ball.y = self.platform.y - self.ball.radius  # скоригувати позцію
 
     def draw_ui(self) -> None:
         # score
@@ -194,7 +185,6 @@ class Game:
         if self.is_win:
             win_text = self.font.render("YOU WIN!", True, (0, 255, 0))
             self.screen.blit(win_text, (self.width // 2 - 80, self.height // 2))
-
 
     def init_objects(self) -> None:
         # початкові координати, розміри та швидкості
