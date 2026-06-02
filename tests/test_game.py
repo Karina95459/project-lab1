@@ -153,3 +153,60 @@ def test_init_objects_sets_start_positions(game):
     assert game.platform.x == expected_platform_x
     assert game.platform.y == expected_platform_y
     assert game.ball.y == game.platform.y - game.ball.radius - 2
+
+
+def test_update_calls_required_methods(game):
+    game.ball.move = mock.MagicMock()
+    game.ball.accelerate = mock.MagicMock()
+    game.check_wall_collisions = mock.MagicMock()
+    game.check_paddle_collision = mock.MagicMock()
+    game.brick_manager.check_collision = mock.MagicMock(return_value=0)
+    game.score_manager.add = mock.MagicMock()
+    game.ball.is_out_of_bounds = mock.MagicMock(return_value=False)
+    game.brick_manager.all_destroyed = mock.MagicMock(return_value=False)
+
+    game.update()
+
+    game.ball.move.assert_called_once()
+    game.ball.accelerate.assert_called_once()
+    game.check_wall_collisions.assert_called_once()
+    game.check_paddle_collision.assert_called_once()
+    game.brick_manager.check_collision.assert_called_once_with(game.ball)
+    game.score_manager.add.assert_called_once_with(0)
+
+
+def test_update_sets_game_over_when_ball_out_of_bounds(game):
+    game.ball.is_out_of_bounds = mock.MagicMock(return_value=True)
+    game.brick_manager.all_destroyed = mock.MagicMock(return_value=False)
+
+    game.update()
+
+    assert game.is_game_over is True
+    assert game.is_win is False
+
+
+def test_update_sets_win_when_all_bricks_destroyed(game):
+    game.ball.is_out_of_bounds = mock.MagicMock(return_value=False)
+    game.brick_manager.all_destroyed = mock.MagicMock(return_value=True)
+
+    game.update()
+
+    assert game.is_win is True
+    assert game.is_game_over is False
+
+
+@pytest.mark.parametrize(
+    "is_game_over, is_win",
+    [
+        (True, False),
+        (False, True),
+    ]
+)
+def test_update_returns_when_game_finished(game, is_game_over, is_win):
+    game.is_game_over = is_game_over
+    game.is_win = is_win
+    game.ball.move = mock.MagicMock()
+
+    game.update()
+
+    game.ball.move.assert_not_called()
