@@ -118,3 +118,29 @@ class TestReset:
         manager.reset()
         manager.reset()
         assert manager.score == 0
+
+# ---------------------------------------------------------------------------
+# Тести draw — mocking
+# ---------------------------------------------------------------------------
+@pytest.mark.rendering
+class TestDraw:
+    def test_draw_blits_twice(self, manager):
+        """draw() малює два рядки: поточний рахунок і рекорд."""
+        mock_screen = MagicMock()
+        manager.font.render = MagicMock(return_value="surf")
+        manager.draw(mock_screen)
+        assert mock_screen.blit.call_count == 2
+
+    def test_draw_renders_score_text(self, manager):
+        mock_screen = MagicMock()
+        manager.font.render = MagicMock(return_value="surf")
+        manager.add(25)
+        manager.draw(mock_screen)
+        manager.font.render.assert_any_call("Score: 25", True, (0, 255, 0))
+
+    def test_draw_renders_best_text(self, manager):
+        mock_screen = MagicMock()
+        manager.font.render = MagicMock(return_value="surf")
+        manager.add(70)
+        manager.draw(mock_screen)
+        manager.font.render.assert_any_call("Best: 70", True, (200, 200, 0))
