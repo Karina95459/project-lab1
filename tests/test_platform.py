@@ -298,3 +298,100 @@ class TestPlatformGetRect:
         assert rect.y == y
         assert rect.width == width
         assert rect.height == height
+
+
+from unittest.mock import patch, Mock
+
+
+class TestPlatformDraw:
+    """Тести для методу draw платформи"""
+
+    def test_draw_calls_pygame_draw_rect(self, paddle):
+        """draw повинен викликати pygame.draw.rect"""
+        mock_screen = Mock()
+        with patch('paddle.pygame.draw.rect') as mock_rect:
+            paddle.draw(mock_screen)
+            mock_rect.assert_called_once()
+
+    def test_draw_with_correct_parameters(self, paddle):
+        """draw повинен викликати pygame.draw.rect з правильними параметрами"""
+        mock_screen = Mock()
+        with patch('paddle.pygame.draw.rect') as mock_rect:
+            paddle.draw(mock_screen)
+            mock_rect.assert_called_once_with(
+                mock_screen,
+                (255, 255, 255),  # колір
+                (100, 500, 100, 20)  # (x, y, width, height)
+            )
+
+    def test_draw_passes_correct_screen(self, paddle):
+        """draw повинен передати правильний об'єкт екрану"""
+        mock_screen = Mock()
+        with patch('paddle.pygame.draw.rect') as mock_rect:
+            paddle.draw(mock_screen)
+            args, kwargs = mock_rect.call_args
+            assert args[0] == mock_screen
+
+    def test_draw_uses_paddle_color(self, paddle):
+        """draw повинен використовувати колір платформи"""
+        paddle.color = (200, 100, 50)
+        mock_screen = Mock()
+        with patch('paddle.pygame.draw.rect') as mock_rect:
+            paddle.draw(mock_screen)
+            args, kwargs = mock_rect.call_args
+            assert args[1] == (200, 100, 50)
+
+    def test_draw_after_move_right(self, paddle):
+        """draw після move_right повинен малювати на новій позиції"""
+        paddle.move_right()
+        mock_screen = Mock()
+        with patch('paddle.pygame.draw.rect') as mock_rect:
+            paddle.draw(mock_screen)
+            args, kwargs = mock_rect.call_args
+            rect_tuple = args[2]
+            assert rect_tuple[0] == 110  # x після руху
+            assert rect_tuple[1] == 500  # y без змін
+
+    def test_draw_uses_paddle_dimensions(self, paddle):
+        """draw повинен використовувати розміри платформи"""
+        mock_screen = Mock()
+        with patch('paddle.pygame.draw.rect') as mock_rect:
+            paddle.draw(mock_screen)
+            args, kwargs = mock_rect.call_args
+            rect_tuple = args[2]
+            assert rect_tuple[2] == paddle.width
+            assert rect_tuple[3] == paddle.height
+
+    @pytest.mark.parametrize("x,y,width,height", [
+        (0, 0, 50, 10),
+        (100, 500, 100, 20),
+        (500, 700, 150, 30),
+    ])
+    def test_draw_parametrized_positions(self, paddle_params, x, y, width, height):
+        """Параметризований тест для draw з різними позиціями"""
+        p = paddle_params(x=x, y=y, width=width, height=height)
+        mock_screen = Mock()
+        with patch('paddle.pygame.draw.rect') as mock_rect:
+            p.draw(mock_screen)
+            args, kwargs = mock_rect.call_args
+            rect_tuple = args[2]
+            assert rect_tuple == (x, y, width, height)
+
+    def test_draw_multiple_times(self, paddle):
+        """draw можна викликати кілька разів"""
+        mock_screen = Mock()
+        with patch('paddle.pygame.draw.rect') as mock_rect:
+            paddle.draw(mock_screen)
+            paddle.draw(mock_screen)
+            paddle.draw(mock_screen)
+            assert mock_rect.call_count == 3
+
+    def test_draw_does_not_modify_paddle_state(self, paddle):
+        """draw не повинен змінювати стан платформи"""
+        original_x = paddle.x
+        original_y = paddle.y
+        mock_screen = Mock()
+        with patch('paddle.pygame.draw.rect'):
+            paddle.draw(mock_screen)
+        assert paddle.x == original_x
+        assert paddle.y == original_y
