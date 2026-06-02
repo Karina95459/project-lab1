@@ -36,3 +36,19 @@ def platform():
 def edge_platform():
     """Платформа біля лівого краю екрану."""
     return Platform(x=0, y=550, height=20, width=100, speed=15)
+
+# ---------------------------------------------------------------------------
+# Тести ініціалізації
+# ---------------------------------------------------------------------------
+class TestInit:
+    def test_initial_position(self, platform):
+        assert platform.x == 350
+        assert platform.y == 550
+
+    def test_size_stored(self, platform):
+        assert platform.width == 100
+        assert platform.height == 20
+
+    def test_start_position_saved(self, platform):
+        assert platform.start_x == 350
+        assert platform.start_y == 550
