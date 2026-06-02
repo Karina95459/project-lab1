@@ -72,3 +72,34 @@ class TestInit:
 
     def test_radius_stored(self, ball):
         assert ball.radius == 10
+
+
+# ---------------------------------------------------------------------------
+# Тести руху
+# ---------------------------------------------------------------------------
+@pytest.mark.movement
+class TestMove:
+    def test_move_changes_x(self, ball):
+        ball.move()
+        assert ball.x == 405  # 400 + int(5 * 1.0)
+
+    def test_move_changes_y(self, ball):
+        ball.move()
+        assert ball.y == 295  # 300 + int(-5 * 1.0)
+
+    def test_move_multiple_steps(self, ball):
+        for _ in range(3):
+            ball.move()
+        assert ball.x == 415
+        assert ball.y == 285
+
+    def test_move_with_speed_multiplier(self, ball):
+        ball.speed_multiplier = 2.0
+        ball.move()
+        assert ball.x == 410  # 400 + int(5 * 2.0)
+        assert ball.y == 290  # 300 + int(-5 * 2.0)
+
+    def test_move_fast_ball(self, fast_ball):
+        fast_ball.move()
+        assert fast_ball.x == 115
+        assert fast_ball.y == 115
