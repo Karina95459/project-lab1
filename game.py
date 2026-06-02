@@ -41,8 +41,7 @@ class Game:
             self.draw()
             self.clock.tick(self.fps)
 
-    def handle_events(self) -> None:
-        
+    def handle_events(self) -> None: 
         for event in pygame.event.get():
 
             # беремо всі події, що накопичились
@@ -167,7 +166,7 @@ class Game:
         if ball_rect.colliderect(platform_rect):
             if self.ball.dy > 0:
                 self.ball.bounce_y()  # bounce: якщо зіткнення сталося, потрібно змінити напрям руху м’яча.
-                self.ball.y = self.platform.y - self.ball.radius  # скоригувати позицію, щоб не було повторного зіткнення
+                self.ball.y = self.platform.y - self.ball.radius  # скоригувати позцію, щоб не було повторного зіткнення
 
     def draw_ui(self) -> None:
         # score
