@@ -63,3 +63,31 @@ def test_reset(manager):
     assert manager.all_destroyed() == False
     # і що їх кількість знову правильна
     assert len(manager.bricks) == 3 * 4
+
+# ===== МОКУВАННЯ =====
+# мокування — підміняємо реальний об'єкт фейковим
+# нам не треба створювати справжній Ball з pygame
+# MagicMock() створює об'єкт який може імітувати будь який метод
+# ми самі кажемо що має повертати get_rect()
+
+def test_check_collision_no_hit(manager):
+    # створюємо фейковий м'яч
+    mock_ball = MagicMock()
+    # кажемо що get_rect() повертає прямокутник далеко від всіх блоків
+    mock_ball.get_rect.return_value = pygame.Rect(9999, 9999, 10, 10)
+    # перевіряємо що score = 0 бо зіткнення не було
+    score = manager.check_collision(mock_ball)
+    assert score == 0
+
+def test_check_collision_hit(manager):
+    # беремо перший блок щоб знати його точні координати
+    first_brick = manager.bricks[0]
+    # створюємо фейковий м'яч
+    mock_ball = MagicMock()
+    # кажемо що get_rect() повертає прямокутник точно на першому блоці
+    mock_ball.get_rect.return_value = pygame.Rect(first_brick.x, first_brick.y, 10, 10)
+    # перевіряємо що score = 10 бо один блок знищено
+    score = manager.check_collision(mock_ball)
+    assert score == 10
+    # і що блок справді знищений
+    assert first_brick.is_destroyed == True
