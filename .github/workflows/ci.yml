@@ -27,6 +27,13 @@ jobs:
         run: |
           pytest tests/ --html=report.html --self-contained-html
 
+      - name: Upload test report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-report
+          path: report.html
+
       - name: Run flake8
         run: |
           flake8 . --max-line-length=120
