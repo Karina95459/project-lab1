@@ -75,3 +75,32 @@ class TestMove:
         platform.move_right()
         platform.move_left()
         assert platform.y == 550
+
+# ---------------------------------------------------------------------------
+# Тести clamp — параметризація
+# ---------------------------------------------------------------------------
+@pytest.mark.collision
+@pytest.mark.parametrize("x,screen_width,expected", [
+    (-50, 800, 0),     # вилазить за лівий край → 0
+    (-1, 800, 0),      # трохи за лівим краєм → 0
+    (750, 800, 700),   # 750 + 100 = 850 > 800 → 700
+    (800, 800, 700),   # повністю за правим краєм → 700
+    (350, 800, 350),   # в межах → не змінюється
+])
+def test_clamp_parametrized(x, screen_width, expected):
+    p = Platform(x=x, y=0, height=20, width=100, speed=10)
+    p.clamp(screen_width)
+    assert p.x == expected
+
+
+@pytest.mark.collision
+class TestClamp:
+    def test_clamp_after_move_left(self, edge_platform):
+        # edge_platform на x=0, рух вліво виводить за межі
+        edge_platform.move_left()
+        edge_platform.clamp(800)
+        assert edge_platform.x == 0
+
+    def test_clamp_keeps_valid_position(self, platform):
+        platform.clamp(800)
+        assert platform.x == 350  # було в межах — лишилось як є
