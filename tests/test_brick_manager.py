@@ -1,0 +1,42 @@
+import pytest
+import pygame
+from unittest.mock import MagicMock
+from brick_manager import BrickManager
+
+pygame.init()
+
+# ===== ФІКСТУРИ =====
+@pytest.fixture
+def manager():
+    # створюємо BrickManager з 3 рядками і 4 колонками
+    # і одразу викликаємо create_level() щоб заповнити список блоків
+    bm = BrickManager(rows=3, cols=4, start_y=60, start_x=40, gap=6)
+    bm.create_level()
+    return bm
+
+# ===== МАРКЕРИ =====
+# всі тести у цьому файлі отримують мітку brick_manager
+# запустити тільки їх: pytest -m brick_manager
+pytestmark = pytest.mark.brick_manager
+
+
+# ===== ТЕСТИ =====
+def test_create_level_count(manager):
+    # перевіряємо що після create_level кількість блоків = rows * cols
+    # у нашому випадку 3 * 4 = 12
+    assert len(manager.bricks) == 3 * 4
+
+# ===== ПАРАМЕТРИЗАЦІЯ =====
+# перевіряємо create_level для різних розмірів поля
+# pytest запустить цей тест тричі з різними rows і cols
+@pytest.mark.parametrize("rows, cols", [
+    (1, 1),   # мінімальне поле — 1 блок
+    (3, 4),   # середнє поле — 12 блоків
+    (5, 11),  # повне поле як у грі — 55 блоків
+])
+def test_create_level_parametrized(rows, cols):
+    # створюємо менеджер з переданими розмірами
+    bm = BrickManager(rows=rows, cols=cols, start_y=60, start_x=40, gap=6)
+    bm.create_level()
+    # перевіряємо що кількість блоків відповідає rows * cols
+    assert len(bm.bricks) == rows * cols
