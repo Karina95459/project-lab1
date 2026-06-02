@@ -75,7 +75,7 @@ class BrickManager:
 
     def all_destroyed(self) -> bool:
         # Повертає True, якщо для всіх блоків справджується умова brick.is_destroyed
-        return all(current_brick.is_destroyed for  current_brick in self.bricks)
+        return all(current_brick.is_destroyed for current_brick in self.bricks)
 
     def reset(self) -> None:
         # Очищуємо список bricks, щоб видалити старі (навіть знищені) об'єкти
