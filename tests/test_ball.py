@@ -276,3 +276,45 @@ class TestReset:
         ball.reset()
         assert ball.x == 400
         assert ball.y == 300
+
+
+# ---------------------------------------------------------------------------
+# Тести draw — mocking
+# ---------------------------------------------------------------------------
+@pytest.mark.rendering
+class TestDraw:
+    @patch("ball.pygame.draw.circle")
+    def test_draw_calls_pygame_circle(self, mock_circle, ball):
+        """Перевіряємо, що draw() викликає pygame.draw.circle з правильними аргументами."""
+        mock_screen = MagicMock()
+        ball.draw(mock_screen)
+        mock_circle.assert_called_once_with(
+            mock_screen,
+            (255, 255, 255),
+            (ball.x, ball.y),
+            ball.radius,
+        )
+
+    @patch("ball.pygame.draw.circle")
+    def test_draw_called_once(self, mock_circle, ball):
+        mock_screen = MagicMock()
+        ball.draw(mock_screen)
+        assert mock_circle.call_count == 1
+
+    @patch("ball.pygame.draw.circle")
+    def test_draw_uses_white_color(self, mock_circle, ball):
+        mock_screen = MagicMock()
+        ball.draw(mock_screen)
+        _, args, _ = mock_circle.mock_calls[0]
+        color = args[1]
+        assert color == (255, 255, 255)
+
+    @patch("ball.pygame.draw.circle")
+    def test_draw_position_after_move(self, mock_circle, ball):
+        """Після move() малюємо на новій позиції."""
+        ball.move()
+        mock_screen = MagicMock()
+        ball.draw(mock_screen)
+        _, args, _ = mock_circle.mock_calls[0]
+        pos = args[2]
+        assert pos == (ball.x, ball.y)
