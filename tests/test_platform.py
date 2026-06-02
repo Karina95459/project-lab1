@@ -165,3 +165,41 @@ class TestPlatformClamp:
         assert paddle.x == 840
         paddle.clamp(800)
         assert paddle.x == 700
+
+
+class TestPlatformInit:
+    """Тести для ініціалізації платформи"""
+
+    def test_platform_init_basic(self, paddle):
+        """Платформа має мати правильні початкові значення"""
+        assert paddle.x == 100
+        assert paddle.y == 500
+        assert paddle.height == 20
+        assert paddle.width == 100
+        assert paddle.speed == 10
+
+    def test_platform_init_start_positions(self, paddle):
+        """start_x та start_y повинні зберегти початкові позиції"""
+        assert paddle.start_x == 100
+        assert paddle.start_y == 500
+
+    def test_platform_init_color(self, paddle):
+        """Колір платформи повинен бути білий (255, 255, 255)"""
+        assert paddle.color == (255, 255, 255)
+
+    @pytest.mark.parametrize("x,y,height,width,speed", [
+        (0, 0, 10, 50, 5),
+        (400, 300, 30, 150, 20),
+        (1024, 720, 15, 80, 12),
+        (50, 100, 25, 120, 15),
+    ])
+    def test_platform_init_parametrized(self, paddle_params, x, y, height, width, speed):
+        """Параметризований тест для різних конфігурацій платформи"""
+        p = paddle_params(x=x, y=y, height=height, width=width, speed=speed)
+        assert p.x == x
+        assert p.y == y
+        assert p.height == height
+        assert p.width == width
+        assert p.speed == speed
+        assert p.start_x == x
+        assert p.start_y == y
