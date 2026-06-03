@@ -30,6 +30,7 @@ def manager():
     with patch("score_manager.pygame.font.Font"):
         return ScoreManager()
 
+
 # ---------------------------------------------------------------------------
 # Тести ініціалізації
 # ---------------------------------------------------------------------------
@@ -45,6 +46,7 @@ class TestInit:
         with patch("score_manager.pygame.font.Font") as mock_font:
             ScoreManager()
             mock_font.assert_called_once_with(None, 36)
+
 
 # ---------------------------------------------------------------------------
 # Тести add
@@ -76,6 +78,7 @@ def test_add_parametrized(manager, points, expected):
     manager.add(points)
     assert manager.score == expected
 
+
 # ---------------------------------------------------------------------------
 # Тести high_score
 # ---------------------------------------------------------------------------
@@ -99,6 +102,7 @@ class TestHighScore:
         manager.add(40)
         assert manager.high_score >= manager.score
 
+      
 # ---------------------------------------------------------------------------
 # Тести reset
 # ---------------------------------------------------------------------------
@@ -119,6 +123,7 @@ class TestReset:
         manager.reset()
         assert manager.score == 0
 
+      
 # ---------------------------------------------------------------------------
 # Тести draw — mocking
 # ---------------------------------------------------------------------------
@@ -144,3 +149,4 @@ class TestDraw:
         manager.add(70)
         manager.draw(mock_screen)
         manager.font.render.assert_any_call("Best: 70", True, (200, 200, 0))
+      
