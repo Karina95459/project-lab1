@@ -102,7 +102,7 @@ class TestHighScore:
         manager.add(40)
         assert manager.high_score >= manager.score
 
-      
+
 # ---------------------------------------------------------------------------
 # Тести reset
 # ---------------------------------------------------------------------------
@@ -123,7 +123,7 @@ class TestReset:
         manager.reset()
         assert manager.score == 0
 
-      
+
 # ---------------------------------------------------------------------------
 # Тести draw — mocking
 # ---------------------------------------------------------------------------
@@ -149,4 +149,3 @@ class TestDraw:
         manager.add(70)
         manager.draw(mock_screen)
         manager.font.render.assert_any_call("Best: 70", True, (200, 200, 0))
-      
