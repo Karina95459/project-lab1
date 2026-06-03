@@ -78,7 +78,7 @@ class TestMove:
         platform.move_left()
         assert platform.y == 550
 
-      
+
 # ---------------------------------------------------------------------------
 # Тести clamp — параметризація
 # ---------------------------------------------------------------------------
@@ -128,7 +128,7 @@ class TestGetRect:
         import pygame
         assert isinstance(platform.get_rect(), pygame.Rect)
 
-      
+
 # ---------------------------------------------------------------------------
 # Тести draw — mocking
 # ---------------------------------------------------------------------------
@@ -183,4 +183,3 @@ class TestReset:
         platform.reset()
         assert platform.x == 350
         assert platform.y == 550
-      
