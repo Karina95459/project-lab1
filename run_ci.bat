@@ -1,9 +1,16 @@
 @echo off
+chcp 65001 > nul
+
+for /f "delims=" %%i in ('where python') do set PY_PATH="%%i" & goto :found
+:found
+
+if not defined PY_PATH set PY_PATH=python
+
 echo === Запуск тестів ===
-C:\Users\risen\AppData\Local\Programs\Python\Python313\Scripts\pytest tests/ --html=report.html --self-contained-html
+%PY_PATH% -m pytest tests/ --html=report.html --self-contained-html
 
 echo === Перевірка стилю коду ===
-C:\Users\risen\AppData\Local\Programs\Python\Python313\Scripts\flake8 . --max-line-length=120
+%PY_PATH% -m flake8 . --max-line-length=120
 
 echo === Готово ===
 pause
